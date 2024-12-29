@@ -28,4 +28,3 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         text.raycastTarget = true; // Corrected property name
     }
 }
-//<3
