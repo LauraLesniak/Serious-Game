@@ -445,10 +445,10 @@ RectTransform:
   - {fileID: 1325234847}
   m_Father: {fileID: 1352435530}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2.4659, y: -180.2973}
-  m_SizeDelta: {x: 495.0682, y: 39.4054}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -5, y: 20}
+  m_SizeDelta: {x: -10, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &735410785
 MonoBehaviour:
@@ -592,7 +592,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -291.1363, w: 247.70993}
+  m_margin: {x: 0, y: 2.486145, z: 0.6279297, w: 0.14672852}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -623,7 +623,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 5, y: 0}
-  m_SizeDelta: {x: 165, y: 278.27}
+  m_SizeDelta: {x: 455, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &941722893
 MonoBehaviour:
@@ -638,7 +638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
-  m_VerticalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &1026235611
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,9 +674,9 @@ RectTransform:
   m_Father: {fileID: 1352435530}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 10, y: -5}
-  m_SizeDelta: {x: 460, y: 30}
+  m_SizeDelta: {x: -40, y: 355}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1026235613
 MonoBehaviour:
@@ -957,7 +957,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.4999962}
+  m_AnchoredPosition: {x: 0, y: -0.5}
   m_SizeDelta: {x: -20, y: -13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1325234848
@@ -1188,7 +1188,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: -17}
+  m_SizeDelta: {x: 20, y: -45}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1684080395
 MonoBehaviour:
@@ -1233,8 +1233,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1233423324}
   m_HandleRect: {fileID: 1233423323}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.10780897
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
