@@ -3,7 +3,18 @@ guid: be499f98898d1f845b3aced31b2b669c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - andGate: {instanceID: 0}
+  - orGate: {instanceID: 0}
+  - notGate: {instanceID: 0}
+  - s1: {instanceID: 0}
+  - s2: {instanceID: 0}
+  - s3: {instanceID: 0}
+  - s4: {instanceID: 0}
+  - s5: {instanceID: 0}
+  - l1: {instanceID: 0}
+  - l2: {instanceID: 0}
+  - l3: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

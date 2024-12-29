@@ -1,13 +1,25 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI; // Required for UI Text component
 
 public class ConnectionManager : MonoBehaviour
 {
     public GameObject andGate, orGate, notGate;
     public GameObject s1, s2, s3, s4, s5; // Switches
     public SpriteRenderer l1, l2, l3;    // Lights as SpriteRenderer
+    public TextMeshProUGUI popUpMessage; // Reference to the Text UI element for the pop-up message
 
     private Color lightOnColor = Color.yellow; // Color for "on" state
     private Color lightOffColor = Color.gray;  // Color for "off" state
+
+    private void Start()
+    {
+        // Hide the pop-up message initially
+        if (popUpMessage != null)
+        {
+            popUpMessage.gameObject.SetActive(false);
+        }
+    }
 
     public void ValidateConnections()
     {
@@ -15,7 +27,7 @@ public class ConnectionManager : MonoBehaviour
         bool isAndGateValid = IsInputConnected(andGate, "InputPort1", s1) &&
                               IsInputConnected(andGate, "InputPort2", s3) &&
                               IsOutputConnected(andGate, l1);
-        UpdateLightState(l1, isAndGateValid); 
+        UpdateLightState(l1, isAndGateValid);
 
         // Check OR Gate
         bool isOrGateValid = (IsInputConnected(orGate, "InputPort1", s2) ||
@@ -28,8 +40,32 @@ public class ConnectionManager : MonoBehaviour
                               IsOutputConnected(notGate, l3);
         UpdateLightState(l3, isNotGateValid);
 
-        // Update Lights based on conditions
-       
+        // Check if all lights are valid and connected
+        if (isAndGateValid && isOrGateValid && isNotGateValid)
+        {
+            // All conditions met, show the pop-up message
+            ShowPopUp("Congratulations! All gates and lights are correctly connected.");
+        }
+    }
+
+    private void ShowPopUp(string message)
+    {
+        if (popUpMessage != null)
+        {
+            popUpMessage.text = message;
+            popUpMessage.gameObject.SetActive(true);
+
+            // Hide the pop-up after 5 seconds
+            Invoke("HidePopUp", 5f); // Adjust time as needed
+        }
+    }
+
+    private void HidePopUp()
+    {
+        if (popUpMessage != null)
+        {
+            popUpMessage.gameObject.SetActive(false);
+        }
     }
 
     private void UpdateLightState(SpriteRenderer light, bool isOn)
@@ -37,14 +73,8 @@ public class ConnectionManager : MonoBehaviour
         if (light != null)
         {
             light.color = isOn ? lightOnColor : lightOffColor;
-            Debug.Log($"{light.gameObject.name} set to {(isOn ? "ON" : "OFF")}");
-        }
-        else
-        {
-            Debug.LogWarning("Light SpriteRenderer is null.");
         }
     }
-
 
     private bool IsInputConnected(GameObject gate, string inputPortName, GameObject switchObj)
     {
@@ -68,7 +98,6 @@ public class ConnectionManager : MonoBehaviour
         return false;
     }
 
-
     private bool IsOutputConnected(GameObject gate, SpriteRenderer light)
     {
         Transform outputPort = gate.transform.Find("OutputPort");
@@ -87,6 +116,4 @@ public class ConnectionManager : MonoBehaviour
     {
         ValidateConnections();
     }
-
-
 }
