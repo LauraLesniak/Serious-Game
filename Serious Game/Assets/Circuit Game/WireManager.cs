@@ -64,9 +64,16 @@ public class WireManager : MonoBehaviour
             currentWire = null;
             isDrawing = false;
 
-            // Validate connections only for valid InputPort or Light
+            // Lock the gate once it has been connected to a wire
             if (endPoint.CompareTag("InputPort") || endPoint.CompareTag("Light"))
             {
+                // Lock the gate that the wire is connected to (input port)
+                Draggable gate = endPoint.transform.parent.GetComponent<Draggable>();
+                if (gate != null)
+                {
+                    gate.LockGate(); // Lock the gate
+                }
+
                 ConnectionManager connectionManager = FindObjectOfType<ConnectionManager>();
                 connectionManager?.OnWireConnected();
             }
@@ -78,5 +85,4 @@ public class WireManager : MonoBehaviour
             isDrawing = false;
         }
     }
-
 }

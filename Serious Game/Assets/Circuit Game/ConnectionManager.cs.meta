@@ -4,17 +4,20 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - andGate: {instanceID: 0}
-  - orGate: {instanceID: 0}
-  - notGate: {instanceID: 0}
-  - s1: {instanceID: 0}
-  - s2: {instanceID: 0}
-  - s3: {instanceID: 0}
-  - s4: {instanceID: 0}
-  - s5: {instanceID: 0}
-  - l1: {instanceID: 0}
-  - l2: {instanceID: 0}
-  - l3: {instanceID: 0}
+  - andGate: {fileID: 5152051536346693947, guid: 59aa2ee56d60cbe4ea0b3c17d476c6c3,
+      type: 3}
+  - orGate: {fileID: 737565425782626978, guid: 18496f64a24dc3e4d8797671cd41db90, type: 3}
+  - notGate: {fileID: 5678327295500664046, guid: b23a3526c9be4da4eb485a26e2571304,
+      type: 3}
+  - s1: {fileID: 701414069567443110, guid: 616e9da7b5b17774baf2aa9994a8c772, type: 3}
+  - s2: {fileID: 5512754577092431723, guid: 187a931cfafad0645ba4e0fe719681d3, type: 3}
+  - s3: {fileID: 6249762565697420153, guid: c70cb970fb04c054e8c1224483a1c480, type: 3}
+  - s4: {fileID: 3625004574042350044, guid: 2e19a01818b45ef4ea1052e1af61ad8c, type: 3}
+  - s5: {fileID: 7176139108384469114, guid: b56ba770f805bcb489c07eae78c09841, type: 3}
+  - l1: {fileID: 1293078755987316397, guid: cb061cdf53c42b64e91109d7142a59a1, type: 3}
+  - l2: {fileID: 6896156990739671717, guid: 5f906a9cb4ac3554a9a00f2ed52966cb, type: 3}
+  - l3: {fileID: 217668324661595007, guid: a306dcaa9326f9b40b99469aae4f09f4, type: 3}
+  - popUpMessage: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
