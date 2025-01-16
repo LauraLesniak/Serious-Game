@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84bd667ad0b2de34789055d61a22fbe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 0}
+  text: {fileID: 7731467590906894640}
   parentAfterDrag: {fileID: 0}
 --- !u!114 &6902544946004881596
 MonoBehaviour:

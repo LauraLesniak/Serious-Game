@@ -452,7 +452,7 @@ PrefabInstance:
     - target: {fileID: 5234439593943190533, guid: dcf38f4d99ee7e244ad8764b0dc4f34f,
         type: 3}
       propertyPath: m_Name
-      value: Slot (5)
+      value: Slot2
       objectReference: {fileID: 0}
     - target: {fileID: 7731467590906894640, guid: dcf38f4d99ee7e244ad8764b0dc4f34f,
         type: 3}
@@ -628,7 +628,6 @@ RectTransform:
   m_Children:
   - {fileID: 116638649}
   - {fileID: 2117229534}
-  - {fileID: 1505824775}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1176,7 +1175,6 @@ GameObject:
   - component: {fileID: 1258944132}
   - component: {fileID: 1258944135}
   - component: {fileID: 1258944134}
-  - component: {fileID: 1258944133}
   m_Layer: 5
   m_Name: Top
   m_TagString: Untagged
@@ -1195,40 +1193,15 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1505824775}
   m_Father: {fileID: 116638649}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 232.9436}
-  m_SizeDelta: {x: 0, y: -465.8872}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 198, y: -37.06372}
+  m_SizeDelta: {x: 396, y: 74.1274}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1258944133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1258944131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
 --- !u!114 &1258944134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1375,10 +1348,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5002971519173096487, guid: dcf38f4d99ee7e244ad8764b0dc4f34f,
+        type: 3}
+      propertyPath: commandType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5234439593943190533, guid: dcf38f4d99ee7e244ad8764b0dc4f34f,
         type: 3}
       propertyPath: m_Name
-      value: Slot (6)
+      value: Slot4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731467590906894640, guid: dcf38f4d99ee7e244ad8764b0dc4f34f,
+        type: 3}
+      propertyPath: m_text
+      value: Move Forward()
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1417,18 +1400,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1505824774}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 577275522}
-  m_Father: {fileID: 538601835}
+  m_Father: {fileID: 1258944132}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -96.6411, y: 232.13876}
-  m_SizeDelta: {x: 141.6822, y: 59.5225}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 331.35, y: -33.352}
+  m_SizeDelta: {x: 129.29352, y: 59.522}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1505824776
 MonoBehaviour:
@@ -1641,7 +1624,7 @@ PrefabInstance:
     - target: {fileID: 5234439593943190533, guid: dcf38f4d99ee7e244ad8764b0dc4f34f,
         type: 3}
       propertyPath: m_Name
-      value: Slot (7)
+      value: Slot5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1776,7 +1759,7 @@ PrefabInstance:
     - target: {fileID: 5234439593943190533, guid: dcf38f4d99ee7e244ad8764b0dc4f34f,
         type: 3}
       propertyPath: m_Name
-      value: Slot (3)
+      value: Slot3
       objectReference: {fileID: 0}
     - target: {fileID: 7731467590906894640, guid: dcf38f4d99ee7e244ad8764b0dc4f34f,
         type: 3}
@@ -1974,7 +1957,7 @@ PrefabInstance:
     - target: {fileID: 5234439593943190533, guid: dcf38f4d99ee7e244ad8764b0dc4f34f,
         type: 3}
       propertyPath: m_Name
-      value: Slot
+      value: Slot1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
