@@ -15,14 +15,17 @@ public class Wire : MonoBehaviour
     public void SetStartPoint(Transform start)
     {
         startPoint = start;
-        lineRenderer.SetPosition(0, start.position); // Set the starting point
+        lineRenderer.SetPosition(0, start.position);
+        Debug.Log($"Wire start set to: {start.name} ({start.position})");
     }
 
     public void SetEndPoint(Transform end)
     {
         endPoint = end;
-        lineRenderer.SetPosition(1, end.position); // Set the endpoint
+        lineRenderer.SetPosition(1, end.position);
+        Debug.Log($"Wire end set to: {end.name} ({end.position})");
     }
+
 
     public void UpdateEndPosition(Vector3 position)
     {
