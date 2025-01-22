@@ -44,11 +44,12 @@ public class PaletteItem : DraggableUI
         // Because we cloned the entire GameObject (including this script),
         // remove the PaletteItem script from the copy:
         Destroy(copy.GetComponent<PaletteItem>());
-        
         // Add the DragItem script so that the copy can be dragged around.
         copy.AddComponent<DragItem>();
+        
 
         // Typically you’d want to do more setup on the copy (e.g. initial positions)
+        copy.transform.SetParent(transform.root, true);
         copy.transform.SetAsLastSibling();
         
         // Make sure the copy doesn't block raycasts while dragging
@@ -76,7 +77,18 @@ public class PaletteItem : DraggableUI
         // If you need the new item to be parented somewhere specific:
         if (paletteDropParent != null)
             copy.transform.SetParent(paletteDropParent);
-        
+            // Figure out new sibling index to reorder in the parent
+            int newSiblingIndex = paletteDropParent.childCount;
+            for (int i = 0; i < paletteDropParent.childCount; i++)
+            {
+                if (transform.position.y > paletteDropParent.GetChild(i).position.y)
+                {
+                    newSiblingIndex = i;
+                    break;
+                }
+            }
+            copy.transform.SetSiblingIndex(newSiblingIndex);
+
         // Re-enable raycasts on the clone
         var copyCanvasGroup = copy.GetComponent<CanvasGroup>();
         if (copyCanvasGroup)

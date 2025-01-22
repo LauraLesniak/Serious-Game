@@ -2,14 +2,17 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class FakeTerminal : MonoBehaviour
 {
     public static FakeTerminal Instance;
-    public EscapeToMain escapeToMain;
+   // public EscapeToMain escapeToMain;
     public TMP_InputField commandInput;      // Reference to the TMP Input Field for command input
     public TextMeshProUGUI outputText;       // Reference to the output text area
     public ScrollRect scrollRect;            // Reference to the ScrollRect component for scrolling
+    private bool terminalActive = true;      // Flag to track if the terminal is active
+    private bool gameStarted = false;         // Flag to track if the game has started
 
     private string inputPrefix = ">>> ";     // Prefix for the input line
 
@@ -25,7 +28,7 @@ public class FakeTerminal : MonoBehaviour
 
     private void Start()
     {
-        escapeToMain.enabled = false;
+
         commandInput.onValueChanged.AddListener(UpdateInputField);
         commandInput.onSubmit.AddListener(HandleCommand);
         commandInput.text = inputPrefix;     // Initialize the input field with the prefix
@@ -34,6 +37,16 @@ public class FakeTerminal : MonoBehaviour
         //Welcome to game, available commands: \nstart, settings, quit
         outputText.text = "Welcome to the Ordinary Hero BCS.1.1 Game Terminal!\nType 'start' to begin the game...\nType 'help' for more information\n";
         ScrollToBottom(); // Ensure the terminal starts scrolled down
+    }
+
+    // Update to check for escape for closing
+    void Update()
+    {
+        // Check if the Escape key is pressed
+        if (terminalActive && Input.GetKeyDown(KeyCode.Escape))
+        {
+            HideTerminal();
+        }
     }
 
     private void UpdateInputField(string text)
@@ -70,10 +83,16 @@ public class FakeTerminal : MonoBehaviour
     {
         if (command.ToLower() == "start")
         {
-            outputText.text += $"\n> {command}\nStarting the game...\n";
-            StartGame();
-            outputText.text += $"Game Started! You can always return to your desktop setup by pressing Esc key.\n";
-            
+            if (gameStarted)
+            {
+                outputText.text += $"\n> {command}\nGame has already started.\n";
+                return;
+            }
+            else
+            {
+                gameStarted = true;
+                StartCoroutine(StartGame());
+            }   
         }
         else if (command.ToLower() == "quit")
         {
@@ -98,27 +117,50 @@ public class FakeTerminal : MonoBehaviour
         ScrollToBottom();
     }
 
+    private IEnumerator StartGame()
+    {
+        outputText.text += "Mission Day 118\n";
+        ScrollToBottom();
+        yield return new WaitForSeconds(3);
+
+        outputText.text += "Logging in to your account...\n";
+        ScrollToBottom();
+        yield return new WaitForSeconds(3);
+
+        //fade out background image of terminal
+        gameObject.GetComponent<Image>().CrossFadeAlpha(0, 2, false);
+
+
+        outputText.text += "Mission Operations Specialist\n";
+        ScrollToBottom();
+        yield return new WaitForSeconds(1);
+
+        outputText.text += "ID number: 108099\n";
+        ScrollToBottom();
+        yield return new WaitForSeconds(1);
+
+        outputText.text += "TU/e Computer Science graduate 2025\n";
+        ScrollToBottom();
+    }
+
     private void ScrollToBottom()
     {
         Canvas.ForceUpdateCanvases(); // Ensure all UI changes are processed
         scrollRect.verticalNormalizedPosition = 0f; // Scroll to the bottom
     }
-
-    private void StartGame()
-    {
-        escapeToMain.enabled = true;
-    }
     
     public void HideTerminal()
     {
         // Deactivate the terminal GameObject when leaving the scene
-        gameObject.SetActive(false);
+        scrollRect.gameObject.SetActive(false);
+        terminalActive = false;
     }
 
     public void ShowTerminal()
     {
         // Reactivate the terminal GameObject when returning to the terminal scene
-        gameObject.SetActive(true);
+        scrollRect.gameObject.SetActive(true);
+        terminalActive = true;
     }
     
 }

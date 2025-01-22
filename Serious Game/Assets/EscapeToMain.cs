@@ -19,12 +19,13 @@ public class EscapeToMain : MonoBehaviour
         // Check if the Escape key is pressed
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // Hide the terminal before switching scenes
-            FakeTerminal.Instance.HideTerminal();
-
-            // Load the MainScene
-            SceneManager.LoadScene("MainScene");
+            LoadMainScene();
         }
+    }
 
+    public void LoadMainScene()
+    {
+        // Load the MainScene
+        SceneManager.LoadScene("MainScene");
     }
 }

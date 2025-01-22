@@ -19,15 +19,20 @@ public class ShowMonitor : MonoBehaviour
 
             case 2:
                 // Load the current level's scene based on its build index
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                SceneManager.LoadScene("AirlockScene");
                 break;
 
             case 3:
                 // Load Scene B
-                SceneManager.LoadScene("TerminalScene");
-                FakeTerminal.Instance.ShowTerminal(); // Ensure the terminal shows when returning
+                FakeTerminal.Instance.ShowTerminal();
+                //SceneManager.LoadScene("TerminalScene");
+                //FakeTerminal.Instance.ShowTerminal(); // Ensure the terminal shows when returning
                 break;
-
+            case 4:
+                //Click away
+                FakeTerminal.Instance.HideTerminal();
+                break;
             default:
                 // Handle an invalid monitorID
                 Debug.LogWarning("Invalid monitorID! No scene to load.");

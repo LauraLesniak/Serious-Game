@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MaxFlow.unity
     guid: 0adc5f7c757f3e0439120c291bf7c0ac
   - enabled: 1
-    path: Assets/Scenes/Door.unity
+    path: Assets/Scenes/AirlockScene.unity
     guid: 037227b6f61c3824b96891876d7cc51d
   - enabled: 1
     path: Assets/Scenes/Knapsack.unity
