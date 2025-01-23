@@ -14,8 +14,9 @@ public class DraggableWeight : MonoBehaviour
         spawn = gameObject.transform.position;
     }
 
-    public void Respawn()
-    {
-        gameObject.transform.position = spawn;
-    }
+public void Respawn()
+{
+    gameObject.transform.position = spawn; // Return to original position
+}
+
 }
