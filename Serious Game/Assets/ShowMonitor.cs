@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement; // Required for loading scenes
 
@@ -7,11 +6,17 @@ public class ShowMonitor : MonoBehaviour
 {
     [SerializeField] private int monitorID; // The ID that determines which scene to load
     private FakeTerminal terminal;
+    private LineRenderer lineRenderer;
+    private TextMeshPro text;
 
     void Start()
     {
         //find Terminal in scene
         terminal = FindObjectOfType<FakeTerminal>();
+        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.enabled = false;
+        text = GetComponentInChildren<TextMeshPro>();
+        text.enabled = false;
     }
 
     // Called when the object is clicked
@@ -45,5 +50,17 @@ public class ShowMonitor : MonoBehaviour
                 Debug.LogWarning("Invalid monitorID! No scene to load.");
                 break;
         }
+    }
+
+    void OnMouseEnter()
+    {
+        text.enabled = true;
+        lineRenderer.enabled = true;
+    }
+
+    void OnMouseExit()
+    {
+        lineRenderer.enabled = false;
+        text.enabled = false;
     }
 }
