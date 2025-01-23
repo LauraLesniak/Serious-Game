@@ -9,29 +9,24 @@ public class DropIntoBag : MonoBehaviour
     public int maxPriority = 20;
     public TMP_Text weightText;            // UI Text to display total weight
     public TMP_Text survivalChanceText;
-    
 
-    private float totalPriority = 0f;        // Current total weight
+    private float totalPriority = 0f;      // Current total priority
     private float totalWeight = 0f;        // Current total weight
     private int snapIndex = 0;             // Index for snap positions
 
     private void OnTriggerEnter(Collider other)
     {
-        // Check if the object is draggable
         if (other.CompareTag("Draggable"))
         {
             DraggableWeight weightScript = other.GetComponent<DraggableWeight>();
 
             if (weightScript != null)
             {
-                // Check if we can add this object's weight
                 if (totalWeight + weightScript.weight <= bagWeightLimit)
                 {
-                    // Update total weight
                     totalWeight += weightScript.weight;
-                    totalPriority += weightScript.priority; // Update total priority
+                    totalPriority += weightScript.priority;
 
-                    // Snap object to the next position
                     if (snapIndex < snapPositionParent.childCount)
                     {
                         Transform snapPosition = snapPositionParent.GetChild(snapIndex);
@@ -44,7 +39,6 @@ public class DropIntoBag : MonoBehaviour
                         Debug.Log("No more snap positions available.");
                     }
 
-                    // Update UI
                     UpdateUI();
                     weightText.text = "Item added: " + weightScript.weight + " | Total Weight: " + totalWeight;
                 }
@@ -66,34 +60,35 @@ public class DropIntoBag : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void ResetBag()
     {
-        // Check if the object is draggable and already inside the bag
-        if (other.CompareTag("Draggable") && other.transform.parent == snapPositionParent)
+    // Reset weights and priorities
+    totalWeight = 0f;
+    totalPriority = 0f;
+    snapIndex = 0;
+
+    // Loop through all snap positions
+    foreach (Transform snapPosition in snapPositionParent)
+    {
+        // Check if there is an item at this snap position
+        if (snapPosition.childCount > 0)
         {
-            DraggableWeight weightScript = other.GetComponent<DraggableWeight>();
+            Transform item = snapPosition.GetChild(0); // Get the item
+            DraggableWeight weightScript = item.GetComponent<DraggableWeight>();
 
             if (weightScript != null)
             {
-                // Subtract the object's weight from the total
-                totalWeight -= weightScript.weight;
-                totalPriority -= weightScript.priority; // Update total priority
-
-                // Detach the object from the snap position parent
-                other.transform.SetParent(null);
-
-                // Update snap index to allow reuse of the position
-                snapIndex = Mathf.Max(0, snapIndex - 1);
-
-                // Update UI
-                UpdateUI();
-                weightText.text = "Item removed: " + weightScript.weight + " | Total Weight: " + totalWeight;
+                weightScript.Respawn(); // Send the item back to its original position
             }
-            else
-            {
-                Debug.LogError("DraggableWeight component is missing on the object: " + other.name);
-            }
+
+            item.SetParent(null); // Detach the item from the snap position
         }
+    }
+
+    // Update the UI
+    UpdateUI();
+    weightText.text = "Bag has been reset!";
+    Debug.Log("Bag and items have been reset!");
     }
 
     private void UpdateSurvivalChance()
