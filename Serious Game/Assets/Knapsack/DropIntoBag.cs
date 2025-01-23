@@ -5,6 +5,7 @@ using TMPro;
 public class DropIntoBag : MonoBehaviour
 {
     public Transform snapPositionParent;   // Parent object where items snap
+    public Transform items;   // Parent items are
     public float bagWeightLimit = 10f;     // Total weight limit of the bag
     public int maxPriority = 20;
     public TMP_Text weightText;            // UI Text to display total weight
@@ -67,21 +68,14 @@ public class DropIntoBag : MonoBehaviour
     totalPriority = 0f;
     snapIndex = 0;
 
-    // Loop through all snap positions
-    foreach (Transform snapPosition in snapPositionParent)
+    // Loop through all items
+    foreach (Transform item in items)
     {
-        // Check if there is an item at this snap position
-        if (snapPosition.childCount > 0)
+        DraggableWeight weightScript = item.GetComponent<DraggableWeight>();
+
+        if (weightScript != null)
         {
-            Transform item = snapPosition.GetChild(0); // Get the item
-            DraggableWeight weightScript = item.GetComponent<DraggableWeight>();
-
-            if (weightScript != null)
-            {
-                weightScript.Respawn(); // Send the item back to its original position
-            }
-
-            item.SetParent(null); // Detach the item from the snap position
+            weightScript.Respawn(); // Send the item back to its original position
         }
     }
 
