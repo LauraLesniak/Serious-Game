@@ -11,6 +11,9 @@ public class CommandRunner : MonoBehaviour
     public RobotController robot;       // Reference to the robot
     public Color highlightColor = Color.yellow; // Color to highlight the current command
 
+    public GameObject prefab;
+    private List<CommandType> savedCommands = new List<CommandType>();
+
     //make sure game is saved on load
     void Awake()
     {
@@ -19,6 +22,20 @@ public class CommandRunner : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         } else {
             Destroy(gameObject);
+        }
+    }
+
+    private int previousChildCount;
+
+    void Update()
+    {
+        if (commandGrid)
+        {
+            if (commandGrid.childCount != previousChildCount)
+            {
+                previousChildCount = commandGrid.childCount;
+                SaveCommands(); // Save when a child is added or removed
+            }
         }
     }
 
@@ -33,16 +50,20 @@ public class CommandRunner : MonoBehaviour
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        GameObject uiObject = GameObject.Find("Commands");
-        if (uiObject != null)
+        if (scene.name == "AirlockScene")
         {
-            commandGrid = uiObject.transform;
-        }
-        GameObject runButton = GameObject.Find("RunButton");
-        if (runButton != null)
-        {
-            Button button = runButton.GetComponent<Button>();
-            button.onClick.AddListener(RunCommands);
+            GameObject uiObject = GameObject.Find("Commands");
+            if (uiObject != null)
+            {
+                commandGrid = uiObject.transform;
+            }
+            GameObject runButton = GameObject.Find("RunButton");
+            if (runButton != null)
+            {
+                Button button = runButton.GetComponent<Button>();
+                button.onClick.AddListener(RunCommands);
+            }
+            LoadCommands();
         }
     }
 
@@ -84,4 +105,41 @@ public class CommandRunner : MonoBehaviour
             }   
         }
     }
+
+
+
+    public void SaveCommands()
+    {
+        savedCommands.Clear();
+        foreach (Transform child in commandGrid)
+        {
+            CommandBlock block = child.GetComponent<CommandBlock>();
+            if (block != null)
+            {
+                savedCommands.Add(block.commandType);
+            }
+        }
+    }
+
+    public void LoadCommands()
+    {
+        foreach (Transform child in commandGrid)
+        {
+            if (child.name != "Divider")
+            {
+                Destroy(child.gameObject);
+            }
+        }
+
+        foreach (CommandType command in savedCommands)
+        {
+            if (prefab != null)
+            {
+                GameObject newcom = Instantiate(prefab, commandGrid);
+                newcom.GetComponent<CommandBlock>().commandType = command;
+
+            }
+        }
+    }
+
 }
