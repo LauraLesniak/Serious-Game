@@ -39,6 +39,13 @@ public class DragItem : DraggableUI
     {
         Debug.Log("End Drag (DragItem)");
 
+        //if dragged too much to the right, delete it
+        if (transform.position.x > Screen.width * 0.2f)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         // Figure out new sibling index to reorder in the parent
         int newSiblingIndex = parentAfterDrag.childCount;
         for (int i = 0; i < parentAfterDrag.childCount; i++)

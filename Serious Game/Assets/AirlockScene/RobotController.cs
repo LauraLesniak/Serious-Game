@@ -41,7 +41,7 @@ public class RobotController : MonoBehaviour
 
         Vector3 alignedPosition = new Vector3(
             gridX * tileSize + tileSize / 2,
-            0,
+            0.1f,
             gridZ * tileSize + tileSize / 2
         ) + gridGenerator.transform.position;
 
@@ -158,8 +158,9 @@ public class RobotController : MonoBehaviour
 
     private bool IsWithinGridBounds(Vector2Int position)
     {
-        return position.x >= 0 && position.x < gridGenerator.gridWidth &&
-               position.y >= 0 && position.y < gridGenerator.gridHeight;
+       //return true; // Disable grid bounds check for now
+        return position.x >= -3 && position.x < -3+gridGenerator.gridWidth &&
+               position.y >= -4 && position.y < -4+gridGenerator.gridHeight;
     }
 
     void OnDrawGizmos()

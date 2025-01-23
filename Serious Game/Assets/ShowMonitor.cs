@@ -6,6 +6,13 @@ using UnityEngine.SceneManagement; // Required for loading scenes
 public class ShowMonitor : MonoBehaviour
 {
     [SerializeField] private int monitorID; // The ID that determines which scene to load
+    private FakeTerminal terminal;
+
+    void Start()
+    {
+        //find Terminal in scene
+        terminal = FindObjectOfType<FakeTerminal>();
+    }
 
     // Called when the object is clicked
     void OnMouseDown()
@@ -25,13 +32,13 @@ public class ShowMonitor : MonoBehaviour
 
             case 3:
                 // Load Scene B
-                FakeTerminal.Instance.ShowTerminal();
+                terminal.ShowTerminal();
                 //SceneManager.LoadScene("TerminalScene");
                 //FakeTerminal.Instance.ShowTerminal(); // Ensure the terminal shows when returning
                 break;
             case 4:
                 //Click away
-                FakeTerminal.Instance.HideTerminal();
+                terminal.HideTerminal();
                 break;
             default:
                 // Handle an invalid monitorID

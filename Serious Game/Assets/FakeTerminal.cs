@@ -16,7 +16,7 @@ public class FakeTerminal : MonoBehaviour
 
     private string inputPrefix = ">>> ";     // Prefix for the input line
 
-        void Awake()
+    void Awake()
     {
         if (Instance == null) {
             Instance = this;
