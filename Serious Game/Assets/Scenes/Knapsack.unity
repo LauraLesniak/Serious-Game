@@ -2609,6 +2609,7 @@ GameObject:
   - component: {fileID: 2023766833653999772}
   - component: {fileID: 4847771313161068675}
   - component: {fileID: 4847771313161068674}
+  - component: {fileID: 4847771313161068676}
   m_Layer: 0
   m_Name: Toolkit
   m_TagString: Draggable
@@ -3418,6 +3419,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weight: 3
   priority: 5
+--- !u!64 &4847771313161068676
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2183239387179503284}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -1550514412580984892, guid: 23fa54104949a604797e1eb0f0c599a4, type: 3}
 --- !u!33 &4876933051927646086
 MeshFilter:
   m_ObjectHideFlags: 0
