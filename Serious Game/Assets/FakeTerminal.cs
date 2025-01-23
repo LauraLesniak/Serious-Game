@@ -1,17 +1,31 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class FakeTerminal : MonoBehaviour
 {
+    public static FakeTerminal Instance;
+    public EscapeToMain escapeToMain;
     public TMP_InputField commandInput;      // Reference to the TMP Input Field for command input
     public TextMeshProUGUI outputText;       // Reference to the output text area
     public ScrollRect scrollRect;            // Reference to the ScrollRect component for scrolling
 
     private string inputPrefix = ">>> ";     // Prefix for the input line
 
+        void Awake()
+    {
+        if (Instance == null) {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        } else {
+            Destroy(gameObject);
+        }
+    }
+
     private void Start()
     {
+        escapeToMain.enabled = false;
         commandInput.onValueChanged.AddListener(UpdateInputField);
         commandInput.onSubmit.AddListener(HandleCommand);
         commandInput.text = inputPrefix;     // Initialize the input field with the prefix
@@ -58,6 +72,8 @@ public class FakeTerminal : MonoBehaviour
         {
             outputText.text += $"\n> {command}\nStarting the game...\n";
             StartGame();
+            outputText.text += $"Game Started! You can always return to your desktop setup by pressing Esc key.\n";
+            
         }
         else if (command.ToLower() == "quit")
         {
@@ -90,9 +106,19 @@ public class FakeTerminal : MonoBehaviour
 
     private void StartGame()
     {
-        // Logic to transition to the game scene
-        Debug.Log("Game Started!");
-        // UnityEngine.SceneManagement.SceneManager.LoadScene("YourGameSceneName");
+        escapeToMain.enabled = true;
+    }
+    
+    public void HideTerminal()
+    {
+        // Deactivate the terminal GameObject when leaving the scene
+        gameObject.SetActive(false);
+    }
+
+    public void ShowTerminal()
+    {
+        // Reactivate the terminal GameObject when returning to the terminal scene
+        gameObject.SetActive(true);
     }
     
 }

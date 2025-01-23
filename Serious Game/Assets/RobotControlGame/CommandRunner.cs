@@ -7,6 +7,7 @@ public class CommandRunner : MonoBehaviour
 {
     public Transform commandGrid;       // The grid where commands are placed
     public RobotController robot;       // Reference to the robot
+    public Color highlightColor = Color.yellow; // Color to highlight the current command
 
     public void RunCommands()
     {
@@ -18,9 +19,15 @@ public class CommandRunner : MonoBehaviour
         foreach (Transform commandBlock in commandGrid)
         {
             CommandBlock block = commandBlock.GetComponent<CommandBlock>();
+            Image blockImage = commandBlock.GetComponent<Image>();
+            Color originalColor = blockImage.color;
 
             if (block != null)
             {
+
+                // Highlight the current command
+                blockImage.color = highlightColor;
+
                 switch (block.commandType)
                 {
                     case CommandType.MoveForward:
@@ -35,6 +42,8 @@ public class CommandRunner : MonoBehaviour
                         yield return StartCoroutine(robot.TurnRight());
                         break;
                 }
+                // Revert the color back to the original
+                blockImage.color = originalColor;
             }   
         }
     }

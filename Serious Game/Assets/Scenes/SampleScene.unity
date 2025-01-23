@@ -166,8 +166,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   helpText: {fileID: 875628438}
-  professorHelpMessage: "Connect the S1 and S3 to L1 through AND gate. Connect the
-    S2 or S4 to L2 through OR gate. Connect S5 to L3 through NOT gate. \n-Bas Luttik"
+  professorHelpMessage: "You need to find correct combinations to turn on the lights.
+    So, you need to connect correct 2 switches to AND gate and OR gate, 1 switch
+    to NOT gate. Also, you need to connect to gates to lights. After doing so, all
+    lights should be on. If not, you can click the restart button to try new combinations.
+    \n-Bas Luttik"
 --- !u!212 &157818629
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1576,13 +1579,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 11.5
+  m_fontSizeBase: 11.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -1701,6 +1704,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInputPort: 1
+--- !u!4 &954076690 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 642580712549320653, guid: cb061cdf53c42b64e91109d7142a59a1,
+    type: 3}
+  m_PrefabInstance: {fileID: 983108370025823095}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &958012475 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6424990612580982835, guid: 5f906a9cb4ac3554a9a00f2ed52966cb,
@@ -2365,6 +2374,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInputPort: 1
+--- !u!4 &1509038498 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 749617258901718185, guid: 5f906a9cb4ac3554a9a00f2ed52966cb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1558995917081201044}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1546570858 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 701414069567443110, guid: 616e9da7b5b17774baf2aa9994a8c772,
@@ -2402,6 +2417,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isInputPort: 1
+--- !u!4 &1769579923 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3323588980609912747, guid: a306dcaa9326f9b40b99469aae4f09f4,
+    type: 3}
+  m_PrefabInstance: {fileID: 5935673120245740521}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1787619807 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6249762565697420153, guid: c70cb970fb04c054e8c1224483a1c480,
@@ -2637,6 +2658,9 @@ MonoBehaviour:
   l1: {fileID: 205869619}
   l2: {fileID: 814970889}
   l3: {fileID: 2072951896}
+  l1InputPort: {fileID: 954076690}
+  l2InputPort: {fileID: 1509038498}
+  l3InputPort: {fileID: 1769579923}
 --- !u!4 &1878113910
 Transform:
   m_ObjectHideFlags: 0
@@ -3269,10 +3293,25 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -259.36
       objectReference: {fileID: 0}
+    - target: {fileID: 5431227907694356977, guid: cb061cdf53c42b64e91109d7142a59a1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5431227907694356977, guid: cb061cdf53c42b64e91109d7142a59a1,
+        type: 3}
+      propertyPath: isInputPort
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8582757705621312319, guid: cb061cdf53c42b64e91109d7142a59a1,
         type: 3}
       propertyPath: m_Name
       value: L1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8582757705621312319, guid: cb061cdf53c42b64e91109d7142a59a1,
+        type: 3}
+      propertyPath: m_TagString
+      value: Light
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -3296,10 +3335,23 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7795870554450089, guid: 5f906a9cb4ac3554a9a00f2ed52966cb, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7795870554450089, guid: 5f906a9cb4ac3554a9a00f2ed52966cb, type: 3}
+      propertyPath: isInputPort
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 523156264731824604, guid: 5f906a9cb4ac3554a9a00f2ed52966cb,
         type: 3}
       propertyPath: m_Name
       value: L2
+      objectReference: {fileID: 0}
+    - target: {fileID: 523156264731824604, guid: 5f906a9cb4ac3554a9a00f2ed52966cb,
+        type: 3}
+      propertyPath: m_TagString
+      value: Light
       objectReference: {fileID: 0}
     - target: {fileID: 6424990612580982835, guid: 5f906a9cb4ac3554a9a00f2ed52966cb,
         type: 3}
@@ -3883,10 +3935,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: OutputPort
       objectReference: {fileID: 0}
+    - target: {fileID: 6415643245826635709, guid: 59aa2ee56d60cbe4ea0b3c17d476c6c3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7089437205449305425, guid: 59aa2ee56d60cbe4ea0b3c17d476c6c3,
         type: 3}
       propertyPath: m_Name
       value: InputPort1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7493881305937637218, guid: 59aa2ee56d60cbe4ea0b3c17d476c6c3,
+        type: 3}
+      propertyPath: isInputPort
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8289119216183672150, guid: 59aa2ee56d60cbe4ea0b3c17d476c6c3,
         type: 3}
@@ -3930,6 +3992,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -265.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 4974015337084609085, guid: b23a3526c9be4da4eb485a26e2571304,
+        type: 3}
+      propertyPath: isInputPort
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5678327295500664046, guid: b23a3526c9be4da4eb485a26e2571304,
         type: 3}
@@ -4023,6 +4090,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: L3
+      objectReference: {fileID: 0}
+    - target: {fileID: 292010731189815327, guid: a306dcaa9326f9b40b99469aae4f09f4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 1009580288231889312, guid: a306dcaa9326f9b40b99469aae4f09f4,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1009580288231889312, guid: a306dcaa9326f9b40b99469aae4f09f4,
+        type: 3}
+      propertyPath: isInputPort
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3001045073276829180, guid: a306dcaa9326f9b40b99469aae4f09f4,
         type: 3}
@@ -4179,6 +4261,11 @@ PrefabInstance:
     - target: {fileID: 7037280007980125878, guid: 18496f64a24dc3e4d8797671cd41db90,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7462425561061088452, guid: 18496f64a24dc3e4d8797671cd41db90,
+        type: 3}
+      propertyPath: isInputPort
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9045419617912589839, guid: 18496f64a24dc3e4d8797671cd41db90,

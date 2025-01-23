@@ -1,11 +1,9 @@
 fileFormatVersion: 2
-guid: 49dbf7ed623179e48b6008de76409031
+guid: 6b99666bb6ff24f7fa5c4f5717b4bfc9
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - wirePrefab: {fileID: 6761267086590685769, guid: ece38d48e30448a428298dfd57f05b8e,
-      type: 3}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
