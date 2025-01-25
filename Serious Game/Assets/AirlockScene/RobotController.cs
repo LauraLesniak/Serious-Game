@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -27,25 +28,14 @@ public class RobotController : MonoBehaviour
         }
 
         tileSize = gridGenerator.tileSize;
-        AlignToGrid();
+
+        AlignToGrid(gridGenerator.startGridPosition);
+        //Debug.Log("Robot position: " + transform.position);
     }
 
-    private void AlignToGrid()
+    private void AlignToGrid(Vector2Int newGridPosition)
     {
-        Vector3 localPos = transform.position - gridGenerator.transform.position;
-
-        int gridX = Mathf.RoundToInt(localPos.x / tileSize);
-        int gridZ = Mathf.RoundToInt(localPos.z / tileSize);
-
-        gridPosition = new Vector2Int(gridX, gridZ);
-
-        Vector3 alignedPosition = new Vector3(
-            gridX * tileSize + tileSize / 2,
-            0.1f,
-            gridZ * tileSize + tileSize / 2
-        ) + gridGenerator.transform.position;
-
-        transform.position = alignedPosition;
+        transform.localPosition = gridGenerator.GetPositionFromGrid(newGridPosition);
     }
 
     public IEnumerator MoveForward()
@@ -59,11 +49,8 @@ public class RobotController : MonoBehaviour
         // Check if the target position is within the grid boundaries
         if (IsWithinGridBounds(targetGridPosition))
         {
-            Vector3 targetPosition = new Vector3(
-                targetGridPosition.x * tileSize + tileSize / 2,
-                0,
-                targetGridPosition.y * tileSize + tileSize / 2
-            ) + gridGenerator.transform.position;
+            //transfer from local position to world position
+            Vector3 targetPosition = transform.root.TransformPoint(gridGenerator.GetPositionFromGrid(targetGridPosition));
 
             while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
             {
@@ -73,6 +60,12 @@ public class RobotController : MonoBehaviour
 
             transform.position = targetPosition;
             gridPosition = targetGridPosition;
+
+            // Check if the robot has reached the finish position
+            if (gridPosition == gridGenerator.finishGridPosition)
+            {
+                OnGameCompleted();
+            }
         }
         else
         {
@@ -159,8 +152,8 @@ public class RobotController : MonoBehaviour
     private bool IsWithinGridBounds(Vector2Int position)
     {
        //return true; // Disable grid bounds check for now
-        return position.x >= -3 && position.x < -3+gridGenerator.gridWidth &&
-               position.y >= -4 && position.y < -4+gridGenerator.gridHeight;
+        return position.x >= 0 && position.x < gridGenerator.gridWidth &&
+               position.y >= 0 && position.y < gridGenerator.gridHeight;
     }
 
     void OnDrawGizmos()
@@ -172,5 +165,10 @@ public class RobotController : MonoBehaviour
     public Vector2Int GetGridPosition()
     {
         return gridPosition;
+    }
+
+    private void OnGameCompleted()
+    {
+        CommandRunner.Instance.OnGameCompleted();
     }
 }

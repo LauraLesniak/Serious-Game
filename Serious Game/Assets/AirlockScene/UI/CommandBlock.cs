@@ -1,6 +1,19 @@
 using UnityEngine;
 using TMPro;
 
+[System.Serializable]
+public class CommandData
+{
+    public CommandType commandType;
+    public int repeatCount;
+
+    public CommandData(CommandType type, int repeats)
+    {
+        commandType = type;
+        repeatCount = repeats;
+    }
+}
+
 public enum CommandType
 {
     MoveForward,
@@ -16,9 +29,19 @@ public class CommandBlock : MonoBehaviour
     public Color turnLeftColor = Color.blue;
     public Color turnRightColor = Color.red;
 
+    public TMP_Dropdown repeatDropdown;
+    public int repeatCount = 1;
+
     private void Start()
     {
         UpdateCommandTextAndColor();
+
+        // Ensure dropdown is linked and set up the listener
+        if (repeatDropdown != null)
+        {
+            repeatDropdown.onValueChanged.AddListener(OnRepeatCountChanged);
+            repeatCount = int.Parse(repeatDropdown.options[repeatDropdown.value].text); // Initialize
+        }
     }
 
     private void UpdateCommandTextAndColor()
@@ -38,5 +61,11 @@ public class CommandBlock : MonoBehaviour
                 commandText.color = turnRightColor;
                 break;
         }
+    }
+
+    public void OnRepeatCountChanged(int index)
+    {
+        repeatCount = int.Parse(repeatDropdown.options[index].text);
+        CommandRunner.Instance.SaveCommands();
     }
 }

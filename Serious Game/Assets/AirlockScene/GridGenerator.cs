@@ -8,6 +8,9 @@ public class GridGenerator : MonoBehaviour
     [Range(0.1f, 1.0f)]
     public float quadSize = 0.9f;  // Scale factor for each quad (0.9 = slight spacing)
 
+    public Vector2Int startGridPosition = new Vector2Int(0, 0); // Starting position for the robot
+    public Vector2Int finishGridPosition = new Vector2Int(0, 0); // Starting position for the robot
+
     void Start()
     {
         GenerateGrid();
@@ -28,6 +31,19 @@ public class GridGenerator : MonoBehaviour
             {
                 GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
 
+                if (x == startGridPosition.x && z == startGridPosition.y)
+                {
+                    quad.GetComponent<Renderer>().material.color = Color.green;
+                }
+                else if (x == finishGridPosition.x && z == finishGridPosition.y)
+                {
+                    quad.GetComponent<Renderer>().material.color = Color.red;
+                }
+                else
+                {
+                    quad.GetComponent<Renderer>().material.color = Color.white;
+                }
+
                 // Position the quad with centering offset
                 Vector3 position = new Vector3(x * tileSize, 0, z * tileSize) - offset;
                 quad.transform.position = transform.position + position;
@@ -41,4 +57,16 @@ public class GridGenerator : MonoBehaviour
             }
         }
     }
+
+    public Vector3 GetPositionFromGrid(Vector2Int gridPosition)
+    {
+        Vector3 offset = new Vector3(
+            (gridWidth - 1) * tileSize * 0.5f,
+            0,
+            (gridHeight - 1) * tileSize * 0.5f
+        );
+
+        Vector3 position = new Vector3(gridPosition.x * tileSize, 0, gridPosition.y * tileSize) - offset;
+        return position;
+    } 
 }

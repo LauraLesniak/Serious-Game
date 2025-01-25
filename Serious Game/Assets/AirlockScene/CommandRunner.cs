@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class CommandRunner : MonoBehaviour
 {
@@ -12,7 +13,8 @@ public class CommandRunner : MonoBehaviour
     public Color highlightColor = Color.yellow; // Color to highlight the current command
 
     public GameObject prefab;
-    private List<CommandType> savedCommands = new List<CommandType>();
+    private List<CommandData> savedCommands = new List<CommandData>();
+    public bool gameCompleted = false;
 
     //make sure game is saved on load
     void Awake()
@@ -64,6 +66,10 @@ public class CommandRunner : MonoBehaviour
                 button.onClick.AddListener(RunCommands);
             }
             LoadCommands();
+            if (gameCompleted == true)
+            {
+                OnGameCompleted();
+            }
         }
     }
 
@@ -82,26 +88,29 @@ public class CommandRunner : MonoBehaviour
 
             if (block != null)
             {
-
-                // Highlight the current command
-                blockImage.color = highlightColor;
-
-                switch (block.commandType)
+                for (int i = 0; i < block.repeatCount; i++) // Repeat the command
                 {
-                    case CommandType.MoveForward:
-                        yield return StartCoroutine(robot.MoveForward());
-                        break;
 
-                    case CommandType.TurnLeft:
-                        yield return StartCoroutine(robot.TurnLeft());
-                        break;
+                    // Highlight the current command
+                    blockImage.color = highlightColor;
 
-                    case CommandType.TurnRight:
-                        yield return StartCoroutine(robot.TurnRight());
-                        break;
+                    switch (block.commandType)
+                    {
+                        case CommandType.MoveForward:
+                            yield return StartCoroutine(robot.MoveForward());
+                            break;
+
+                        case CommandType.TurnLeft:
+                            yield return StartCoroutine(robot.TurnLeft());
+                            break;
+
+                        case CommandType.TurnRight:
+                            yield return StartCoroutine(robot.TurnRight());
+                            break;
+                    }
+                    // Revert the color back to the original
+                    blockImage.color = originalColor;
                 }
-                // Revert the color back to the original
-                blockImage.color = originalColor;
             }   
         }
     }
@@ -116,7 +125,7 @@ public class CommandRunner : MonoBehaviour
             CommandBlock block = child.GetComponent<CommandBlock>();
             if (block != null)
             {
-                savedCommands.Add(block.commandType);
+                savedCommands.Add(new CommandData(block.commandType, block.repeatCount));
             }
         }
     }
@@ -131,15 +140,41 @@ public class CommandRunner : MonoBehaviour
             }
         }
 
-        foreach (CommandType command in savedCommands)
+        foreach (CommandData commandData in savedCommands)
         {
             if (prefab != null)
             {
                 GameObject newcom = Instantiate(prefab, commandGrid);
-                newcom.GetComponent<CommandBlock>().commandType = command;
+                CommandBlock block = newcom.GetComponent<CommandBlock>();
+                if (block != null)
+                {
+                    block.commandType = commandData.commandType;
+                    block.repeatCount = commandData.repeatCount;
 
+                    // Update dropdown value if using TMP Dropdown
+                    TMP_Dropdown dropdown = newcom.GetComponentInChildren<TMP_Dropdown>();
+                    if (dropdown != null)
+                    {
+                        dropdown.value = commandData.repeatCount - 1; // Assuming dropdown options are 1-based
+                    }
+                }
             }
         }
+    }
+
+    public void OnGameCompleted()
+    {
+        gameCompleted = true;
+        GameObject uiObject = GameObject.Find("Completed");
+        if (uiObject != null)
+        {
+            //set the children as active
+            foreach (Transform child in uiObject.transform)
+            {
+                child.gameObject.SetActive(true);
+            }
+        }
+        Debug.Log("Game Completed!");
     }
 
 }
