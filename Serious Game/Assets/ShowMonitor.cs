@@ -7,7 +7,7 @@ public class ShowMonitor : MonoBehaviour
     [SerializeField] private int monitorID; // The ID that determines which scene to load
     private FakeTerminal terminal;
     private LineRenderer lineRenderer;
-    private TextMeshPro text;
+    public TextMeshPro text;
 
     void Start()
     {
@@ -15,7 +15,6 @@ public class ShowMonitor : MonoBehaviour
         terminal = FindObjectOfType<FakeTerminal>();
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.enabled = false;
-        text = GetComponentInChildren<TextMeshPro>();
         text.enabled = false;
     }
 
@@ -40,10 +39,6 @@ public class ShowMonitor : MonoBehaviour
                 terminal.ShowTerminal();
                 //SceneManager.LoadScene("TerminalScene");
                 //FakeTerminal.Instance.ShowTerminal(); // Ensure the terminal shows when returning
-                break;
-            case 4:
-                //Click away
-                terminal.HideTerminal();
                 break;
             default:
                 // Handle an invalid monitorID
