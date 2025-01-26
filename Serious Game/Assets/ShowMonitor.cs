@@ -21,6 +21,10 @@ public class ShowMonitor : MonoBehaviour
     // Called when the object is clicked
     void OnMouseDown()
     {
+        if (FakeTerminal.Instance.terminalActive)
+        {
+            return;
+        }
         switch (monitorID)
         {
             case 1:

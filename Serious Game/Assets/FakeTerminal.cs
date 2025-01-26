@@ -18,20 +18,31 @@ public class FakeTerminal : MonoBehaviour
 
     [Header("Terminal Behavior")]
     public int maxLines = 5; 
-    private bool terminalActive = true;      // Flag to track if the terminal is active
+    public bool terminalActive = true;      // Flag to track if the terminal is active
     private bool gameStarted = false;         // Flag to track if the game has started
     private bool debounceActive = false; // Debounce flag
     private string inputPrefix = ">>> ";     // Prefix for the input line
+
+    private AudioSource audioSource;
 
     private List<string> lines = new List<string>();
     
     void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         if (Instance == null) {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            if (terminalTwinText != null)
+            {
+                DontDestroyOnLoad(terminalTwinText.gameObject);
+            }
         } else {
             Destroy(gameObject);
+            if (terminalTwinText != null)
+            {
+                Destroy(terminalTwinText.gameObject);
+            }
         }
     }
 
@@ -70,12 +81,32 @@ public class FakeTerminal : MonoBehaviour
 
     // -------------------- Core Terminal Methods --------------------- //
 
+    private bool isPlayingBeep = false; 
+    private void PlayBeepSound()
+    {
+        if (audioSource != null && !isPlayingBeep)
+        {
+            StartCoroutine(PlayBeepSoundCoroutine());
+        }
+    }
+
+    private IEnumerator PlayBeepSoundCoroutine()
+    {
+        isPlayingBeep = true;
+        audioSource.Play();
+        yield return new WaitForSeconds(audioSource.clip.length); // Wait for the beep sound to finish
+        isPlayingBeep = false;
+    }
+
     /// <summary>
     /// Add a new line of text to the terminal. Automatically truncates old lines
     /// if we exceed maxLines, then updates both outputText and terminalTwinText.
     /// </summary>
     public void AddToTerminal(string newLine)
     {
+
+        //play beep sound
+        PlayBeepSound();
 
         outputText.text += $"{newLine}\n";
 
@@ -210,6 +241,22 @@ public class FakeTerminal : MonoBehaviour
         AddToTerminal("TU/e Computer Science graduate 2025");
         ScrollToBottom();
 
+        AddToTerminal("Astronaut Status:");
+        yield return new WaitForSeconds(0.1f);
+        AddToTerminal("Martinez = ONLINE");
+        yield return new WaitForSeconds(0.1f);
+        AddToTerminal("Bottlíková = ONLINE");
+        yield return new WaitForSeconds(0.1f);
+        AddToTerminal("Škařupa = ONLINE");
+        yield return new WaitForSeconds(0.1f);
+        AddToTerminal("Gürkan = ONLINE");
+        yield return new WaitForSeconds(0.1f);
+        AddToTerminal("Künü = ONLINE");
+        yield return new WaitForSeconds(0.1f);
+        AddToTerminal("Leśniak = ONLINE");
+        yield return new WaitForSeconds(0.1f);
+        AddToTerminal("Ronay = ONLINE");
+        
         yield return new WaitForSeconds(0.5f);
 
         AddToTerminal("Press ESC to hide Terminal");
@@ -229,6 +276,7 @@ public class FakeTerminal : MonoBehaviour
     
     public void HideTerminal()
     {
+        if (!gameStarted) return; // Prevent hiding terminal before the game starts
         if (debounceActive) return; // Prevent hiding if debounce is active
         // Deactivate the terminal GameObject when leaving the scene
         scrollRect.gameObject.SetActive(false);
@@ -236,6 +284,13 @@ public class FakeTerminal : MonoBehaviour
         gameObject.GetComponent<Image>().CrossFadeAlpha(0, 0.1f, false);
 
         UpdateTerminalTwinText(); // Update TerminalTwin text when hiding terminal
+    }
+
+    private IEnumerator ActivateInputFieldAfterFrame()
+    {
+        yield return null; // Wait for one frame
+        commandInput.Select();
+        commandInput.ActivateInputField();
     }
 
     public void ShowTerminal()
@@ -246,6 +301,9 @@ public class FakeTerminal : MonoBehaviour
         scrollRect.gameObject.SetActive(true);
         terminalActive = true;
         gameObject.GetComponent<Image>().CrossFadeAlpha(1, 0.1f, false);
+        //commandInput.Select();
+        StartCoroutine(ActivateInputFieldAfterFrame());
+        //commandInput.ActivateInputField();
     }
 
     private IEnumerator DebounceCoroutine()
