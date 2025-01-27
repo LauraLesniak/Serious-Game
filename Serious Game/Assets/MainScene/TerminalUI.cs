@@ -5,6 +5,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
+public class TerminalLine
+{
+    public string Text { get; set; }
+    public string Color { get; set; }
+
+    public TerminalLine(string text, string color)
+    {
+        Text = text;
+        Color = color;
+    }
+}
+
 public class TerminalUI : MonoBehaviour
 {
     public static TerminalUI Instance;        // Optional singleton for easy access
@@ -19,7 +31,9 @@ public class TerminalUI : MonoBehaviour
     [Header("Behavior")]
     [SerializeField] private int maxLines = 10;
     [SerializeField] private string inputPrefix = ">>> ";
-    private List<string> lines = new List<string>();
+
+    private List<TerminalLine> lines = new List<TerminalLine>(); // Use TerminalLine instead of string
+    
     public bool terminalActive = true;
     private bool debounceActive = false; // Debounce flag
 
@@ -137,24 +151,42 @@ public class TerminalUI : MonoBehaviour
     // }
     public void AddToTerminal(string newLine, string colorNameOrHex = null)
     {
+        //normal output
         // If a color is provided, wrap the text in <color=...> tags
-        // (this color tag affects both the main terminal and the twin,
-        // which might be your intended behavior)
         string finalLine = string.IsNullOrEmpty(colorNameOrHex)
             ? newLine
             : $"<color={colorNameOrHex}>{newLine}</color>";
 
-        // 1) Append new line to the main terminal text normally
         outputText.text += $"{finalLine}\n";
 
-        // 2) Keep track of the un-chunked line in our lines list
-        lines.Add(finalLine);
+        //for the terminal twin chunk the line
+        const int maxCharsPerLine = 39;
+        int index = 0;
+        while (index < newLine.Length)
+        {
+            int remaining = newLine.Length - index;
+            int length = Mathf.Min(remaining, maxCharsPerLine);
+            string chunk = newLine.Substring(index, length);
 
-        // 3) Truncate if we have too many lines stored
+            lines.Add(new TerminalLine(chunk, colorNameOrHex));
+            
+            index += length;
+        }
+        // Handle case of an empty line
+        if (newLine.Length == 0)
+        {
+            lines.Add(new TerminalLine("", colorNameOrHex));
+        }
+
         while (lines.Count > maxLines)
         {
             lines.RemoveAt(0);
         }
+
+        // 2) Keep track of the un-chunked line in our lines list
+        // lines.Add(new TerminalLine(newLine, colorNameOrHex));
+
+        // 3) Truncate if we have too many lines stored
 
         // 4) Rebuild the TerminalTwin text -- *with chunking*
         RebuildTerminalTwinText();
@@ -171,30 +203,42 @@ public class TerminalUI : MonoBehaviour
     {
         if (terminalTwinText == null) return;
 
-        const int maxCharsPerLine = 39;
-        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        // const int maxCharsPerLine = 39;
+        // System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < lines.Count; i++)
+        {
+            string finalLine = string.IsNullOrEmpty(lines[i].Color)
+            ? lines[i].Text
+            : $"<color={lines[i].Color}>{lines[i].Text}</color>";
+
+            sb.AppendLine(finalLine);
+        }
+        terminalTwinText.text = sb.ToString();
 
         // For each line in our 'lines' list, break it up into 39-char segments
-        foreach (var line in lines)
-        {
-            int index = 0;
-            while (index < line.Length)
-            {
-                int remaining = line.Length - index;
-                int length = Mathf.Min(remaining, maxCharsPerLine);
-                string chunk = line.Substring(index, length);
-                sb.AppendLine(chunk);
-                index += length;
-            }
+        // foreach (var line in lines)
+        // {
 
-            // Handle case of an empty line
-            if (line.Length == 0)
-            {
-                sb.AppendLine(""); // Just a blank line
-            }
-        }
+        //     int index = 0;
+        //     while (index < line.Length)
+        //     {
+        //         int remaining = line.Length - index;
+        //         int length = Mathf.Min(remaining, maxCharsPerLine);
+        //         string chunk = line.Substring(index, length);
+        //         sb.AppendLine(chunk);
+        //         index += length;
+        //     }
 
-        terminalTwinText.text = sb.ToString();
+        //     // Handle case of an empty line
+        //     if (line.Length == 0)
+        //     {
+        //         sb.AppendLine(""); // Just a blank line
+        //     }
+        // }
+
+        // terminalTwinText.text = sb.ToString();
     }
 
 
