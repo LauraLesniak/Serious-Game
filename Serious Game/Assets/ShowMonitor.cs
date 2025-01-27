@@ -5,14 +5,14 @@ using UnityEngine.SceneManagement; // Required for loading scenes
 public class ShowMonitor : MonoBehaviour
 {
     [SerializeField] private int monitorID; // The ID that determines which scene to load
-    private FakeTerminal terminal;
+    private TerminalUI terminal;
     private LineRenderer lineRenderer;
     public TextMeshPro text;
 
     void Start()
     {
         //find Terminal in scene
-        terminal = FindObjectOfType<FakeTerminal>();
+        terminal = FindObjectOfType<TerminalUI>();
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.enabled = false;
         text.enabled = false;
@@ -21,7 +21,7 @@ public class ShowMonitor : MonoBehaviour
     // Called when the object is clicked
     void OnMouseDown()
     {
-        if (FakeTerminal.Instance.terminalActive)
+        if (TerminalUI.Instance.terminalActive)
         {
             return;
         }

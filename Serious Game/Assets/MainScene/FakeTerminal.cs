@@ -27,6 +27,11 @@ public class FakeTerminal : MonoBehaviour
 
     private List<string> lines = new List<string>();
     
+    // ---------------- Gate-related state ----------------
+    private bool waitingForOpenGateCommand = false; // Are we expecting the user to type "open A"?
+    private bool gateAOpened = false;               // Has gate A been opened already?
+
+
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -174,6 +179,37 @@ public class FakeTerminal : MonoBehaviour
     {
         AddToTerminal("");
         AddToTerminal($"> {command}");
+
+        // ---------------- NEW: Check if we are waiting for the "open gate" command ----------------
+        if (waitingForOpenGateCommand && !gateAOpened)
+        {
+            // Example: parse "open A"
+            if (command.ToLower().StartsWith("open "))
+            {
+                string gateId = command.Substring(5).Trim().ToUpper(); // everything after 'open '
+                if (gateId == "A")
+                {
+                    gateAOpened = true;
+                    AddToTerminal("Gate A is now open! Good job.");
+                    // Once gate is opened, we can do any follow-up logic here.
+                    return;
+                }
+                else if (gateId == "B")
+                {
+                    AddToTerminal("This gate cannot be opened");
+                }
+                else
+                {
+                    AddToTerminal($"Gate '{gateId}' not recognized. Check the map for the correct ID.");
+                    return;
+                }
+            }
+            // If we get here, the user typed something else while we want "open a"
+            AddToTerminal("Command not recognized. Use 'open [gateId]', e.g. 'open A'.");
+            return;
+        }
+
+        // ---------------- Existing commands ----------------
         if (command.ToLower() == "start")
         {
             if (gameStarted)
@@ -260,7 +296,65 @@ public class FakeTerminal : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         AddToTerminal("Press ESC to hide Terminal");
-        ScrollToBottom();
+
+        // wait for closing of terminal
+        yield return StartCoroutine(WaitForTerminalToClose());
+        yield return new WaitForSeconds(10f);
+        AddToTerminal("Martinez: Collected probe. Outside Lab-1.");
+        yield return new WaitForSeconds(1.5f);
+        AddToTerminal("Martinez: Open gate pls");
+
+        yield return new WaitForSeconds(2f);
+        AddToTerminal("open gate using command: open [gateId]");
+        AddToTerminal("Find the correct gate near Lab-1 on the map");
+
+        // ---------------- NEW: Start waiting for "open A" command with tips ----------------
+        yield return StartCoroutine(WaitForOpenGate());
+        
+        // After the gate is opened, continue your game logic...
+        AddToTerminal("You have successfully opened Gate A. The mission continues!");
+    }
+
+    private IEnumerator WaitForOpenGate()
+    {
+        waitingForOpenGateCommand = true;
+
+        float elapsedTime = 0f;
+        float firstTipTime = 10f;   // time in seconds to show first tip
+        float secondTipTime = 30f; // time in seconds to show second tip
+
+        // Wait until gateAOpened becomes true (typed correctly)
+        while (!gateAOpened)
+        {
+            elapsedTime += Time.deltaTime;
+
+            // Show first tip if enough time has passed (and we haven't shown it yet)
+            if (elapsedTime >= firstTipTime && firstTipTime > 0f)
+            {
+                AddToTerminal("Tip: The correct syntax is 'open [gateId]'. For example, 'open A'.");
+                firstTipTime = -1f; // mark tip shown so we don't show it again
+            }
+
+            // Show second tip a bit later if still not opened
+            if (elapsedTime >= secondTipTime && secondTipTime > 0f)
+            {
+                AddToTerminal("Tip: The gate ID is 'A'. Type 'open A'.");
+                secondTipTime = -1f;
+            }
+
+            yield return null;
+        }
+
+        // Gate is opened, stop waiting
+        waitingForOpenGateCommand = false;
+    }
+
+    private IEnumerator WaitForTerminalToClose()
+    {
+        while (terminalActive)
+        {
+            yield return null; // Wait for the next frame
+        }
     }
 
     private void ScrollToBottom()
@@ -291,6 +385,7 @@ public class FakeTerminal : MonoBehaviour
         yield return null; // Wait for one frame
         commandInput.Select();
         commandInput.ActivateInputField();
+        commandInput.caretPosition = commandInput.text.Length; // Set caret position after the prefix
     }
 
     public void ShowTerminal()

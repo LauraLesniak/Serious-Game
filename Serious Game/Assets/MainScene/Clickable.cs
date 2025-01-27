@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 // Ensures we have the needed components
@@ -5,24 +6,28 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class Clickable : MonoBehaviour
 {
-    private AudioSource audioSource;
+    protected AudioSource audioSource;
     private LineRenderer lineRenderer;
+    public TextMeshPro text;
     //public TextMeshPro text;
 
-    private void Awake()
+    protected void Awake()
     {
         // Grab the AudioSource on this same GameObject
         audioSource = GetComponent<AudioSource>();
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.enabled = false;
-        // text.enabled = false;
+        if (text != null)
+        {
+            text.enabled = false;
+        }
     }
 
     // This gets called automatically on left-click if the object
     // has a 2D collider and the camera is looking at it.
-    private void OnMouseDown()
+    protected virtual void OnMouseDown()
     {
-        if (FakeTerminal.Instance.terminalActive)
+        if (TerminalUI.Instance.terminalActive)
         {
             return;
         }
@@ -36,13 +41,19 @@ public class Clickable : MonoBehaviour
 
     void OnMouseEnter()
     {
-        // text.enabled = true;
+        if (text != null)
+        {
+            text.enabled = true;
+        }
         lineRenderer.enabled = true;
     }
 
     void OnMouseExit()
     {
         lineRenderer.enabled = false;
-        // text.enabled = false;
+        if (text != null)
+        {
+            text.enabled = false;
+        }
     }
 }
