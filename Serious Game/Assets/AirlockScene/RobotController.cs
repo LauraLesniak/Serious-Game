@@ -153,7 +153,8 @@ public class RobotController : MonoBehaviour
     {
        //return true; // Disable grid bounds check for now
         return position.x >= 0 && position.x < gridGenerator.gridWidth &&
-               position.y >= 0 && position.y < gridGenerator.gridHeight;
+               position.y >= 0 && position.y < gridGenerator.gridHeight &&
+           !gridGenerator.obstaclePositions.Contains(position); // Check for obstacles
     }
 
     void OnDrawGizmos()

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GridGenerator : MonoBehaviour
@@ -10,6 +11,8 @@ public class GridGenerator : MonoBehaviour
 
     public Vector2Int startGridPosition = new Vector2Int(0, 0); // Starting position for the robot
     public Vector2Int finishGridPosition = new Vector2Int(0, 0); // Starting position for the robot
+
+    public List<Vector2Int> obstaclePositions = new List<Vector2Int>(); // List of obstacle positions
 
     void Start()
     {
@@ -31,13 +34,19 @@ public class GridGenerator : MonoBehaviour
             {
                 GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
 
-                if (x == startGridPosition.x && z == startGridPosition.y)
+                Vector2Int gridPosition = new Vector2Int(x, z);
+
+                if (gridPosition == startGridPosition)
                 {
                     quad.GetComponent<Renderer>().material.color = Color.green;
                 }
-                else if (x == finishGridPosition.x && z == finishGridPosition.y)
+                else if (gridPosition == finishGridPosition)
                 {
                     quad.GetComponent<Renderer>().material.color = Color.red;
+                }
+                else if (obstaclePositions.Contains(gridPosition))
+                {
+                    quad.GetComponent<Renderer>().material.color = Color.black; // Mark obstacles as black
                 }
                 else
                 {
