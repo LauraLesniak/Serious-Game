@@ -25,7 +25,7 @@ public class WireManager : MonoBehaviour
         {
             int inputIOLayer = LayerMask.NameToLayer("Gate IO");
             int layerMask = 1 << inputIOLayer;
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, Mathf.Infinity, layerMask);
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 1000, layerMask);
             Debug.Log(hit.collider);
             if (hit.collider != null && currentWire != null)
             {

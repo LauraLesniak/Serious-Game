@@ -37,6 +37,10 @@ public class ScenarioManager : MonoBehaviour
 
     private IEnumerator StartScenario()
     {
+
+        CameraManager.Instance.SetState(0);
+        MainScreen.Instance.SetState(0);
+
         TerminalUI.Instance.AddToTerminal("Mission Day 118");
         yield return new WaitForSeconds(0.5f);
 
@@ -75,6 +79,8 @@ public class ScenarioManager : MonoBehaviour
         
         yield return new WaitForSeconds(10f);
         
+        MainScreen.Instance.SetState(1);
+        
         TerminalUI.Instance.AddToTerminal("Martinez: Collected probe. Outside Lab-1.", "yellow");
         yield return new WaitForSeconds(1.5f);
         TerminalUI.Instance.AddToTerminal("Martinez: Open gate pls", "yellow");
@@ -90,6 +96,12 @@ public class ScenarioManager : MonoBehaviour
 
     private IEnumerator SystemBreakdownScenario()
     {
+
+        MainScreen.Instance.SetState(2);
+        FullscreenExplosion.Instance.PlayExplosion();
+        CameraManager.Instance.SetState(1);
+        yield return new WaitForSeconds(2f);
+
         //Crackling sound, all cameras go to static, except for the satellite view.
         //Alarm sounds start playing. Warning pops up on main screen “ALL SYSTEMS OFFLINE” 
 
@@ -101,6 +113,8 @@ public class ScenarioManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         TerminalUI.Instance.AddToTerminal("POWER NETWORK OFFLINE", "red");
         yield return new WaitForSeconds(2f);
+
+        CameraManager.Instance.SetState(2);
 
         TerminalUI.Instance.AddToTerminal("Martinez: What was that?", "yellow");
         //TerminalUI.Instance.AddToTerminal("Martinez: there has been an explosion", "yellow");
@@ -126,6 +140,8 @@ public class ScenarioManager : MonoBehaviour
         TerminalUI.Instance.AddToTerminal("CAPCOM:  Our engineers will control the robot to unlock", "blue");
         yield return new WaitForSeconds(2f);
         TerminalUI.Instance.AddToTerminal("Control the robot COSMO on your middle screen", "green");
+        CameraManager.Instance.SetState(3);
+        MainScreen.Instance.SetState(3);
     }
 
     // Called by CommandProcessor if user typed "open X"

@@ -28,14 +28,18 @@ public class ShowMonitor : MonoBehaviour
         switch (monitorID)
         {
             case 1:
-                // Load the scene with the map of the level
-                //SceneManager.LoadScene("map");
+                // find a gameobject with the name CameraCanvas
+                //set its first children active to show it,
+                //run the function U
+                CameraManager.Instance.ShowCanvas();
+
                 break;
 
             case 2:
                 // Load the current level's scene based on its build index
                 //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-                SceneManager.LoadScene("AirlockScene");
+                //SceneManager.LoadScene("AirlockScene");
+                MainScreen.Instance.OnPress();
                 break;
 
             case 3:
