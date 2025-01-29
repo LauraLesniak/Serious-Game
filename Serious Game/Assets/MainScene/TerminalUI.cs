@@ -149,8 +149,19 @@ public class TerminalUI : MonoBehaviour
 
     //     ScrollToBottom();
     // }
-    public void AddToTerminal(string newLine, string colorNameOrHex = null)
+    public void AddToTerminal(string newLine, string colorNameOrHex = null, string soundEffect = null)
     {
+
+        //play sound effect if sound effect is not null
+        if (soundEffect != null)
+        {
+            SoundManager.Instance.Play(soundEffect);
+        }
+        else if (colorNameOrHex == "yellow")
+        {
+            SoundManager.Instance.Play("message");
+        }
+
         //normal output
         // If a color is provided, wrap the text in <color=...> tags
         string finalLine = string.IsNullOrEmpty(colorNameOrHex)
