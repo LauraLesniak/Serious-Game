@@ -69,9 +69,24 @@ public class TerminalUI : MonoBehaviour
             // Hide terminal on background click
             bgImage.GetComponent<Button>().onClick.AddListener(HideTerminal);
         }
+
+        commandInput.onValidateInput += ValidateChar;
     }
 
     // ----------------- Handling user input ----------------- //
+
+    // This function is called for every character typed
+    private char ValidateChar(string text, int charIndex, char addedChar)
+    {
+        // ASCII 27 = ESC
+        if (addedChar == 27)
+        {
+            // Return '\0' to indicate "don't add this character"
+            return '\0';
+        }
+
+        return addedChar;
+    }
 
     private void Update()
     {

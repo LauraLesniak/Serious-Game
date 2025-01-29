@@ -356,6 +356,7 @@ public class ScenarioManager : MonoBehaviour
         yield return new WaitForSeconds(5f);
 
         //main screen shows success
+        SoundManager.Instance.Play("correct");
         TerminalUI.Instance.AddToTerminal("State Report: O2 in core module optimal at 21%");
         MainScreen.Instance.SetState(9); //set screen to oxygen recovered
 
