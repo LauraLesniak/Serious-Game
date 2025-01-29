@@ -42,23 +42,21 @@ public class MainScreen : MonoBehaviour
         //based on the current screen, do something
         switch (currentScreen)
         {
-            case 0:
-                // Add your logic for screen 0
-                break;
-            case 1:
-                // Add your logic for screen 1
-                break;
-            case 2:
-                // Add your logic for screen 2
-                break;
             case 3: // Airlock screen
                 SceneManager.LoadScene("AirlockScene");
                 break;
-            case 4: // power warning
-                break;
+            
             case 5: // circuit game
                 SceneManager.LoadScene("CircuitGame");
-                break;                
+                break;          
+
+            case 8: // flow game
+                SceneManager.LoadScene("MaxFlow");
+                break;        
+
+            case 10: // knapsack game
+                SceneManager.LoadScene("Knapsack");
+                break;
             // Add more cases as needed
             default:
                 break;

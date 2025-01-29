@@ -108,6 +108,21 @@ public class MaxFlowLogic : MonoBehaviour
             {
                 maxFlowText.text = $"Max flow achieved: {maxFlowAchieved}";
             }
+
+            //send to terminal if max flow achieved
+            if (maxFlowAchieved == 8)
+            {
+                GameObject uiObject = GameObject.Find("Completed");
+                if (uiObject != null)
+                {
+                    //set the children as active
+                    foreach (Transform child in uiObject.transform)
+                    {
+                        child.gameObject.SetActive(true);
+                    }
+                }
+                ScenarioManager.Instance.onFlowControlCompleted();
+            }
         }
         if (currentFlowText != null)
         {

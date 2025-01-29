@@ -8,6 +8,9 @@ public class ScenarioManager : MonoBehaviour
     public bool gameStarted = false;
     private bool gateAOpened = false;
     private bool waitingForGate = false;
+    private bool waitingForDiagram = false;
+    private bool waitingForFlow = false;
+    private bool waitingForList = false;
 
     private void Awake()
     {
@@ -42,11 +45,14 @@ public class ScenarioManager : MonoBehaviour
         {
             gameStarted = true;
 
+            // StartCoroutine(StartScenario());
+            
             //debug skipping progress
-            //StartCoroutine(StartScenario());
-            StartCoroutine(AirlockOpenedScenario());
+            StartCoroutine(CircuitCompletedScenario());
         }
     }
+
+    //1 START SCENARIO
 
     private IEnumerator StartScenario()
     {
@@ -104,108 +110,10 @@ public class ScenarioManager : MonoBehaviour
 
         waitingForGate = true;
         // Start timed tip logic
-        StartCoroutine(ShowTipsWhileWaitingForGate());
+        StartCoroutine(ShowTipsWhileWaitingForGate()); //NEXT SCENARIO
     }
 
-    private IEnumerator SystemBreakdownScenario()
-    {
-
-        MainScreen.Instance.SetState(2);
-        FullscreenExplosion.Instance.PlayExplosion();
-        CameraManager.Instance.SetState(1);
-        yield return new WaitForSeconds(2f);
-
-        //Crackling sound, all cameras go to static, except for the satellite view.
-        //Alarm sounds start playing. Warning pops up on main screen “ALL SYSTEMS OFFLINE” 
-
-        yield return new WaitForSeconds(1f);
-        TerminalUI.Instance.AddToTerminal("CRITICAL SYSTEM ERROR", "red");
-        yield return new WaitForSeconds(0.5f);
-        //TerminalUI.Instance.AddToTerminal("TYPE 'reboot' for SYSTEM RESTART", "red");
-        TerminalUI.Instance.AddToTerminal("BREACH DETECTED", "red");
-        yield return new WaitForSeconds(0.5f);
-        TerminalUI.Instance.AddToTerminal("POWER NETWORK OFFLINE", "red");
-        yield return new WaitForSeconds(2f);
-
-        CameraManager.Instance.SetState(2);
-
-        TerminalUI.Instance.AddToTerminal("Martinez: What was that?", "yellow");
-        //TerminalUI.Instance.AddToTerminal("Martinez: there has been an explosion", "yellow");
-
-        yield return new WaitForSeconds(4f);
-
-        TerminalUI.Instance.AddToTerminal("CAPCOM:  There was an explosion in Lab-2 during the repair work, and we’ve lost the entire module", "blue");
-
-        yield return new WaitForSeconds(5f);
-
-        TerminalUI.Instance.AddToTerminal("CAPCOM:  We’ve lost the rest of your team, we need to get you home safely", "blue");
-        yield return new WaitForSeconds(2.6f);
-        TerminalUI.Instance.AddToTerminal("CAPCOM:  Please return to airlock immediately", "blue");
-
-        yield return new WaitForSeconds(5f);
-
-        TerminalUI.Instance.AddToTerminal("Martinez:  OK, Airlock stuck", "yellow");
-
-        yield return new WaitForSeconds(4f);
-
-        TerminalUI.Instance.AddToTerminal("CAPCOM:  We’re deploying COSMO to assist", "blue");
-        yield return new WaitForSeconds(3f);
-        TerminalUI.Instance.AddToTerminal("CAPCOM:  Our engineers will control the robot to unlock", "blue");
-        yield return new WaitForSeconds(2f);
-        TerminalUI.Instance.AddToTerminal("Control the robot COSMO on your middle screen", "green");
-        CameraManager.Instance.SetState(3);
-        MainScreen.Instance.SetState(3);
-        //set main screen to airlock game and wait until game is finished
-    }
-
-    private void OnAirlockGameCompleted()
-    {
-        StartCoroutine(AirlockOpenedScenario());
-    }
-
-    //should be ran after airlock game is completed
-    private IEnumerator AirlockOpenedScenario()
-    {
-        TerminalUI.Instance.AddToTerminal("Airlock game completed!", "green");
-        MainScreen.Instance.SetState(4);
-        yield return new WaitForSeconds(3f);
-        
-        TerminalUI.Instance.AddToTerminal("Martinez: Alright, awaiting instructions.", "yellow");
-        yield return new WaitForSeconds(3f);
-        TerminalUI.Instance.AddToTerminal("Flight Director: <color=green>@MissionOperationsSpecialist</color=green> transmit the power restoration schematics to Martinez without delay.", "pink");
-        yield return new WaitForSeconds(3.5f);
-        TerminalUI.Instance.AddToTerminal("Open the wiring app and solve the problem!", "green");
-        MainScreen.Instance.SetState(5);
-    }
-
-    // Called by CommandProcessor if user typed "open X"
-    public void OnOpenGateCommand(string gateId)
-    {
-        if (!gameStarted)
-        {
-            TerminalUI.Instance.AddToTerminal("You need to start the game first. Type 'start'.");
-            return;
-        }
-
-        if (!waitingForGate)
-        {
-            TerminalUI.Instance.AddToTerminal("No gate to open at this moment.");
-            return;
-        }
-
-        // Check gate ID
-        if (gateId == "A")
-        {
-            gateAOpened = true;
-            waitingForGate = false;
-            TerminalUI.Instance.AddToTerminal("Gate A is now open!");
-            // Possibly do more logic after the gate is open...
-        }
-        else
-        {
-            TerminalUI.Instance.AddToTerminal($"Gate '{gateId}' not recognized. Check the map!");
-        }
-    }
+    //2 GATE OPENED
 
     // Continuously shows tips if user hasn’t opened gate A yet
     private IEnumerator ShowTipsWhileWaitingForGate()
@@ -239,10 +147,321 @@ public class ScenarioManager : MonoBehaviour
             // Continue with scenario...
             yield return new WaitForSeconds(1f);
             TerminalUI.Instance.AddToTerminal("Martinez: thx", "yellow");
+            yield return new WaitForSeconds(5f);
+            TerminalUI.Instance.AddToTerminal("Martinez: I'm outside", "yellow");
+            yield return new WaitForSeconds(15f);
 
-            yield return new WaitForSeconds(20f);
+            StartCoroutine(SystemBreakdownScenario()); //NEXT SCENARIO
+        }
+    }
 
-            StartCoroutine(SystemBreakdownScenario());
+    //3 SYSTEM BREAKDOWN
+
+    private IEnumerator SystemBreakdownScenario()
+    {
+        MainScreen.Instance.SetState(2);
+        FullscreenExplosion.Instance.PlayExplosion();
+        CameraManager.Instance.SetState(1);
+        yield return new WaitForSeconds(2f);
+
+        //Crackling sound, all cameras go to static, except for the satellite view.
+        //Alarm sounds start playing. Warning pops up on main screen “ALL SYSTEMS OFFLINE” 
+
+        TerminalUI.Instance.AddToTerminal("State Report: Severe breach in Lab-2", "red");
+        yield return new WaitForSeconds(1f);
+        TerminalUI.Instance.AddToTerminal("CRITICAL SYSTEM ERROR", "red");
+        yield return new WaitForSeconds(0.5f);
+        //TerminalUI.Instance.AddToTerminal("TYPE 'reboot' for SYSTEM RESTART", "red");
+        TerminalUI.Instance.AddToTerminal("BREACH DETECTED", "red");
+        yield return new WaitForSeconds(0.5f);
+        TerminalUI.Instance.AddToTerminal("POWER NETWORK OFFLINE", "red");
+        yield return new WaitForSeconds(2f);
+
+        CameraManager.Instance.SetState(2);
+
+        TerminalUI.Instance.AddToTerminal("Martinez: What was that?", "yellow");
+        //TerminalUI.Instance.AddToTerminal("Martinez: there has been an explosion", "yellow");
+
+        yield return new WaitForSeconds(4f);
+        TerminalUI.Instance.AddToTerminal("CAPCOM:  Martinez, this is CAPCOM. Do you copy?", "#24c1ff");
+        yield return new WaitForSeconds(2f);
+        TerminalUI.Instance.AddToTerminal("CAPCOM:  There was an explosion in Lab-2 during the repair work, and we’ve lost the entire module", "#24c1ff");
+        yield return new WaitForSeconds(4f);
+        TerminalUI.Instance.AddToTerminal("CAPCOM:  We’ve lost the rest of your team, we need to get you home safely", "#24c1ff");
+        yield return new WaitForSeconds(2.6f);
+        TerminalUI.Instance.AddToTerminal("CAPCOM:  Please return to airlock immediately", "#24c1ff");
+
+        yield return new WaitForSeconds(5f);
+
+        TerminalUI.Instance.AddToTerminal("Martinez:  OK, Airlock stuck", "yellow");
+
+        yield return new WaitForSeconds(4f);
+
+        TerminalUI.Instance.AddToTerminal("CAPCOM:  We’re deploying COSMO to assist", "#24c1ff");
+        yield return new WaitForSeconds(3f);
+        TerminalUI.Instance.AddToTerminal("CAPCOM:  Our engineers will control the robot to unlock", "#24c1ff");
+        yield return new WaitForSeconds(2f);
+        TerminalUI.Instance.AddToTerminal("Control the robot COSMO on your middle screen", "green");
+        
+        //set main screen to airlock game and wait until game is finished
+        CameraManager.Instance.SetState(3);
+        MainScreen.Instance.SetState(3);
+    }
+
+    //4 AIRLOCK GAME COMPLETED
+
+    private void OnAirlockGameCompleted()
+    {
+        StartCoroutine(AirlockOpenedScenario());
+    }
+
+    //should be ran after airlock game is completed
+    private IEnumerator AirlockOpenedScenario()
+    {
+        TerminalUI.Instance.AddToTerminal("Airlock game completed!", "green");
+        MainScreen.Instance.SetState(4);
+        yield return new WaitForSeconds(3f);
+        
+        TerminalUI.Instance.AddToTerminal("Martinez: Alright, awaiting instructions.", "yellow");
+        yield return new WaitForSeconds(3f);
+        TerminalUI.Instance.AddToTerminal("<color=#ff33f8>Flight Director:</color> <color=green>@MissionOperationsSpecialist</color> <color=#ff33f8> transmit the power restoration schematics to Martinez without delay.</color>");
+        yield return new WaitForSeconds(3.5f);
+        TerminalUI.Instance.AddToTerminal("Open the wiring app and solve the problem!", "green");
+        MainScreen.Instance.SetState(5);
+
+        //at this point, hide the airlock game to prevent it from showing up in other games
+        //find a gameobject with name 'AirlockGame' and set it inactive
+        GameObject airlockGame = GameObject.Find("AirlockGame");
+        if (airlockGame != null)
+        {
+            airlockGame.SetActive(false);
+        }
+    }
+
+    //5 CIRCUIT GAME COMPLETED
+
+    public void onCircuitGameCompleted()
+    {
+        StartCoroutine(CircuitCompletedScenario());
+    }
+
+    private IEnumerator CircuitCompletedScenario()
+    {
+        TerminalUI.Instance.AddToTerminal("Circuit game completed!", "green");
+        MainScreen.Instance.SetState(4); //set screen back to power outage
+        yield return new WaitForSeconds(3f);
+        TerminalUI.Instance.AddToTerminal("Martinez: Send me the diagram!", "yellow");
+        yield return new WaitForSeconds(1f);
+        TerminalUI.Instance.AddToTerminal("type 'send diagram.pdf' to send diagram to Martinez");
+
+        waitingForDiagram = true;
+    }
+
+    //5 DIAGRAM SENT
+
+    public void onDiagramSent()
+    {
+        StartCoroutine(DiagramSentScenario());
+    }
+
+    private IEnumerator DiagramSentScenario()
+    {
+        //Reaction to diagram sent
+        yield return new WaitForSeconds(2f);
+        TerminalUI.Instance.AddToTerminal("Martinez: Recieved. On it.", "yellow");
+        yield return new WaitForSeconds(5f);
+
+        //lights back on on cameras set middle screen to show power back on
+        TerminalUI.Instance.AddToTerminal("POWER SYSTEM RECOVERED", "green");
+        MainScreen.Instance.SetState(6); //set screen back to power on
+        CameraManager.Instance.SetState(4);
+
+        //CAPCOM talks about next mission
+        MainScreen.Instance.SetState(7); //show not enough oxygen
+        yield return new WaitForSeconds(4f);
+        TerminalUI.Instance.AddToTerminal("CAPCOM:  Great work so far Martinez. We’re losing a significant amount of O2 through the breach, so here’s what we need you to do:", "#24c1ff");
+        yield return new WaitForSeconds(5f);
+        TerminalUI.Instance.AddToTerminal("CAPCOM:  re-route the oxygen flow to prioritize the core, cargo, and escape pod modules.", "#24c1ff");
+        yield return new WaitForSeconds(3f);
+        TerminalUI.Instance.AddToTerminal("CAPCOM:  We’re preparing a schematic to help you maximize the flow, and we’ll send it over shortly.", "#24c1ff");
+
+        //Flight director assigns next task
+        yield return new WaitForSeconds(3f);
+        TerminalUI.Instance.AddToTerminal("<color=#ff33f8>Flight Director:</color> <color=green>@MissionOperationsSpecialist</color> <color=#ff33f8> send the oxygen optimization system details to Martinez now. We need to conserve as much as possible.</color>");
+        yield return new WaitForSeconds(3.5f);
+        TerminalUI.Instance.AddToTerminal("Open the pipe flow app and maximise flow!", "green");
+        MainScreen.Instance.SetState(8); //show pipe flow game
+    }
+
+    //6 FLOW CONTROL COMPLETED
+
+    public void onFlowControlCompleted()
+    {
+        StartCoroutine(FlowCompletedScenario());
+    }
+
+    //should be ran after airlock game is completed
+    private IEnumerator FlowCompletedScenario()
+    {
+        TerminalUI.Instance.AddToTerminal("Flow game completed!", "green");
+        MainScreen.Instance.SetState(7); //show not enough oxygen again
+        yield return new WaitForSeconds(3f);
+        TerminalUI.Instance.AddToTerminal("Martinez: Send me the flow schematic!", "yellow");
+        yield return new WaitForSeconds(1f);
+        TerminalUI.Instance.AddToTerminal("type 'send flow.pdf' to send diagram to Martinez");
+
+        waitingForFlow = true;
+        
+    }
+
+    //7 FLOW SENT
+
+    public void onFlowSent()
+    {
+        StartCoroutine(FlowSentScenario());
+    }
+
+    private IEnumerator FlowSentScenario()
+    {
+        //Reaction to flow sent
+        yield return new WaitForSeconds(2f);
+        TerminalUI.Instance.AddToTerminal("Martinez: Flow diagram recieved", "yellow");
+        yield return new WaitForSeconds(5f);
+        TerminalUI.Instance.AddToTerminal("Martinez: Done", "yellow");
+        yield return new WaitForSeconds(3f);
+        TerminalUI.Instance.AddToTerminal("Martinez: What's the reading? Success?", "yellow");
+        yield return new WaitForSeconds(5f);
+
+        //main screen shows success
+        TerminalUI.Instance.AddToTerminal("State Report: O2 in core module optimal at 21%");
+        MainScreen.Instance.SetState(9); //set screen to oxygen recovered
+
+        //CAPCOM talks about next mission
+        yield return new WaitForSeconds(4f);
+        TerminalUI.Instance.AddToTerminal("CAPCOM:  Great job, Martinez. Now, we need you to head to the cargo module", "#24c1ff");
+        yield return new WaitForSeconds(5f);
+        TerminalUI.Instance.AddToTerminal("CAPCOM:  You’ll need to gather a few essential items for your journey back.", "#24c1ff");
+        yield return new WaitForSeconds(3f);
+        TerminalUI.Instance.AddToTerminal("CAPCOM:  We’ll send you a list shortly with everything you'll need to maximize your survival chances.", "#24c1ff");
+        yield return new WaitForSeconds(2f);
+        TerminalUI.Instance.AddToTerminal("CAPCOM:  Which, of course, is… 100%", "#24c1ff");
+
+        //Flight director assigns next task
+        yield return new WaitForSeconds(3f);
+        TerminalUI.Instance.AddToTerminal("<color=#ff33f8>Flight Director:</color> <color=green>@MissionOperationsSpecialist</color> <color=#ff33f8> prioritize and optimize resources for Martinez, keeping weight constraints in mind. Send him the list immediately.</color>");
+        yield return new WaitForSeconds(3.5f);
+        TerminalUI.Instance.AddToTerminal("Open the cargo-bay-camera and maximise survival chance!", "green");
+        MainScreen.Instance.SetState(10); //show knapsack game
+
+    }
+
+    //8 KNAPSACK GAME COMPLETED
+
+    public void onKnapsackCompleted()
+    {
+        StartCoroutine(KnapsackCompletedScenario());
+    }
+
+    private IEnumerator KnapsackCompletedScenario()
+    {
+        TerminalUI.Instance.AddToTerminal("Cargo game completed!", "green");
+        MainScreen.Instance.SetState(0); //show tue bg
+        yield return new WaitForSeconds(3f);
+        TerminalUI.Instance.AddToTerminal("Martinez: Send me the list of items!", "yellow");
+        yield return new WaitForSeconds(1f);
+        TerminalUI.Instance.AddToTerminal("type 'send list.txt' to send item list to Martinez");
+
+        waitingForList = true;
+
+    }
+
+    //9 KNAPSACK SENT
+
+    public void onKnapsackSent()
+    {
+        StartCoroutine(KnapsackSentScenario());
+    }
+
+    private IEnumerator KnapsackSentScenario()
+    {
+        //Reaction to list sent
+        yield return new WaitForSeconds(2f);
+        TerminalUI.Instance.AddToTerminal("Martinez: Got it!", "yellow");
+        yield return new WaitForSeconds(2f);
+        TerminalUI.Instance.AddToTerminal("Martinez: Packing now. Is there anything else?", "yellow");
+        yield return new WaitForSeconds(5f);
+        TerminalUI.Instance.AddToTerminal("CAPCOM: Martinez, head to the escape pod with the gear. You have 20 minutes to collect everything and get yourself ready. You’re coming home.", "#24c1ff");
+        yield return new WaitForSeconds(3f);
+    }
+    
+    //--------------------------------------------------------------------------------
+    //COMMANDS/HELP FUNCTIONS
+
+    // OPEN GATE COMMAND
+    // STARTS SCENARIO 3 - BREAKDOWN
+    public void OnOpenGateCommand(string gateId)
+    {
+        if (!gameStarted)
+        {
+            TerminalUI.Instance.AddToTerminal("You need to start the game first. Type 'start'.");
+            return;
+        }
+
+        if (!waitingForGate)
+        {
+            TerminalUI.Instance.AddToTerminal("No gate to open at this moment.");
+            return;
+        }
+
+        // Check gate ID
+        if (gateId == "A")
+        {
+            gateAOpened = true;
+            waitingForGate = false;
+            TerminalUI.Instance.AddToTerminal("Gate A is now open!");
+            // Possibly do more logic after the gate is open...
+        }
+        else
+        {
+            TerminalUI.Instance.AddToTerminal($"Gate '{gateId}' not recognized. Check the map!");
+        }
+    }
+
+    public void OnSendDiagramCommand(string toSend)
+    {
+        if (!gameStarted)
+        {
+            TerminalUI.Instance.AddToTerminal("You need to start the game first. Type 'start'.");
+            return;
+        }
+
+        if (!waitingForDiagram && !waitingForFlow && !waitingForList)
+        {
+            TerminalUI.Instance.AddToTerminal("Nothing to send at this moment.");
+            return;
+        }
+
+        if (waitingForDiagram && toSend == "diagram.pdf")
+        {
+            waitingForDiagram = false;
+            TerminalUI.Instance.AddToTerminal("Diagram sent!");
+            onDiagramSent();
+        }
+        else if (waitingForFlow && toSend == "flow.pdf")
+        {
+            waitingForFlow = false;
+            TerminalUI.Instance.AddToTerminal("Diagram sent!");
+            onFlowSent();
+        }
+        else if (waitingForList && toSend == "list.txt")
+        {
+            waitingForList = false;
+            TerminalUI.Instance.AddToTerminal("List sent!");
+            onKnapsackSent();
+        }
+        else
+        {
+            TerminalUI.Instance.AddToTerminal($"File '{toSend}' not recognized. Follow instructions precisely");
         }
     }
 

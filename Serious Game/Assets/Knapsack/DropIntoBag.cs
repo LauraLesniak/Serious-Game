@@ -103,6 +103,20 @@ public class DropIntoBag : MonoBehaviour
         float survivalChance = ((float)totalPriority / maxPriority) * 100f;
         survivalChanceText.text = $"Chance of Survival: {survivalChance:F1}%";
         Debug.Log($"Survival Chance Calculated: {survivalChance}% (Total Priority: {totalPriority}, Max Priority: {maxPriority})");
+
+        if (survivalChance >= 100f)
+        {
+            GameObject uiObject = GameObject.Find("Completed");
+                if (uiObject != null)
+                {
+                    //set the children as active
+                    foreach (Transform child in uiObject.transform)
+                    {
+                        child.gameObject.SetActive(true);
+                    }
+                }
+                ScenarioManager.Instance.onKnapsackCompleted();
+        }
     }
 
     private void UpdateUI()

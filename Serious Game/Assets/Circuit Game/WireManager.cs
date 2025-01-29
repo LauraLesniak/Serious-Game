@@ -5,9 +5,21 @@ public class WireManager : MonoBehaviour
     public GameObject wirePrefab; // Assign the wire prefab in the Inspector
     private Wire currentWire;    // The current wire being drawn
     private bool isDrawing = false; // Is the player currently drawing a wire?
+    private ConnectionManager connectionManager;
+
+    private void Awake()
+    {
+        connectionManager = FindObjectOfType<ConnectionManager>();
+    }
 
     private void Update()
     {
+        //check if game completed, if so, dont check the input
+        if (connectionManager.gameCompleted)
+        {
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0) && !isDrawing) // On left mouse click
         {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);

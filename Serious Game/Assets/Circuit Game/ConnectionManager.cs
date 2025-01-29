@@ -10,6 +10,8 @@ public class ConnectionManager : MonoBehaviour
     private Color lightOnColor = Color.yellow; // Color for "on" state
     private Color lightOffColor = Color.gray;  // Color for "off" state
 
+    public bool gameCompleted = false;
+
     public void ValidateConnections()
     {
         // Check if switches are correctly connected to the gates
@@ -26,6 +28,21 @@ public class ConnectionManager : MonoBehaviour
         UpdateLightState(l1, isSwitchesConnectedToAndGate && isAndGateConnectedToLight);
         UpdateLightState(l2, isSwitchesConnectedToOrGate && isOrGateConnectedToLight);
         UpdateLightState(l3, isSwitchesConnectedToNotGate && isNotGateConnectedToLight);
+
+        //if all lights are on, show the completed text
+        if (!gameCompleted)
+        {
+            if (l1.color == lightOnColor && l2.color == lightOnColor && l3.color == lightOnColor)
+            {
+                gameCompleted = true;
+                GameObject completed = GameObject.Find("Completed");
+                if (completed.transform.childCount > 0)
+                {
+                    completed.transform.GetChild(0).gameObject.SetActive(true);
+                }
+                ScenarioManager.Instance.onCircuitGameCompleted();
+            }
+        }
     }
 
     private void UpdateLightState(SpriteRenderer light, bool isOn)

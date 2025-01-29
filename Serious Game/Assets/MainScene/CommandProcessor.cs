@@ -40,6 +40,11 @@ public class CommandProcessor : MonoBehaviour
             string gateId = cmd.Substring(5).Trim().ToUpper();
             ScenarioManager.Instance.OnOpenGateCommand(gateId);
         }
+        else if (cmd.StartsWith("send "))
+        {
+            string toSend = cmd.Substring(5).Trim();
+            ScenarioManager.Instance.OnSendDiagramCommand(toSend);
+        }
         else if (cmd == "help")
         {
             TerminalUI.Instance.AddToTerminal("Ordinary Hero is a serious game meant for persuading students to study Computer Science & Engineering bachelor at TU/e");
