@@ -41,7 +41,7 @@ public class DropIntoBag : MonoBehaviour
                     }
 
                     UpdateUI();
-                    weightText.text = "Item added: " + weightScript.weight + " | Total Weight: " + totalWeight;
+                    weightText.text = "Item added: " + weightScript.weight + "kg | Total Weight: " + totalWeight + "kg / " + bagWeightLimit + "kg";
                 }
                 else
                 {
