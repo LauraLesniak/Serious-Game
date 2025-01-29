@@ -8,7 +8,7 @@ public class WireManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // On left mouse click
+        if (Input.GetMouseButtonDown(0) && !isDrawing) // On left mouse click
         {
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
@@ -25,7 +25,7 @@ public class WireManager : MonoBehaviour
         {
             int inputIOLayer = LayerMask.NameToLayer("Gate IO");
             int layerMask = 1 << inputIOLayer;
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 1000, layerMask);
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 200, layerMask);
             Debug.Log(hit.collider);
             if (hit.collider != null && currentWire != null)
             {
@@ -82,7 +82,6 @@ public class WireManager : MonoBehaviour
                 {
                     gate.LockGate(); // Lock the gate
                 }
-
                 ConnectionManager connectionManager = FindObjectOfType<ConnectionManager>();
                 connectionManager?.OnWireConnected();
             }

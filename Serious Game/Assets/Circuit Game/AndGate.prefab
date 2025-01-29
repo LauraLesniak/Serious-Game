@@ -591,8 +591,8 @@ GameObject:
   - component: {fileID: 3148098757886677071}
   - component: {fileID: 7122083599515456674}
   - component: {fileID: 612914877345941218}
-  m_Layer: 0
-  m_Name: InputPort2
+  m_Layer: 7
+  m_Name: InputPort1
   m_TagString: InputPort
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
