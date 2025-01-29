@@ -43,23 +43,24 @@ public class MainScreen : MonoBehaviour
         switch (currentScreen)
         {
             case 0:
-                Debug.Log("Screen 0 pressed");
                 // Add your logic for screen 0
                 break;
             case 1:
-                Debug.Log("Screen 1 pressed");
                 // Add your logic for screen 1
                 break;
             case 2:
-                Debug.Log("Screen 2 pressed");
                 // Add your logic for screen 2
                 break;
             case 3: // Airlock screen
                 SceneManager.LoadScene("AirlockScene");
                 break;
+            case 4: // power warning
+                break;
+            case 5: // circuit game
+                SceneManager.LoadScene("CircuitGame");
+                break;                
             // Add more cases as needed
             default:
-                Debug.LogWarning("Unknown screen pressed");
                 break;
         }
     }

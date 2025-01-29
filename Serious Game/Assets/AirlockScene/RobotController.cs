@@ -16,6 +16,7 @@ public class RobotController : MonoBehaviour
     private bool isMoving = false;
 
     public GridGenerator gridGenerator;  // Reference to the grid
+    public static event Action GameCompleted;
 
     private float tileSize;
 
@@ -171,5 +172,6 @@ public class RobotController : MonoBehaviour
     private void OnGameCompleted()
     {
         CommandRunner.Instance.OnGameCompleted();
+        GameCompleted?.Invoke();
     }
 }

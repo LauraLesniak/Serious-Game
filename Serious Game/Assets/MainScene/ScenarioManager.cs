@@ -21,6 +21,16 @@ public class ScenarioManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        RobotController.GameCompleted += OnAirlockGameCompleted;
+    }
+
+    private void OnDestroy()
+    {
+        RobotController.GameCompleted -= OnAirlockGameCompleted;
+    }
+
     //Start Scenario - played when player types 'start'
     public void OnStartCommand()
     {
@@ -31,7 +41,10 @@ public class ScenarioManager : MonoBehaviour
         else
         {
             gameStarted = true;
-            StartCoroutine(StartScenario());
+
+            //debug skipping progress
+            //StartCoroutine(StartScenario());
+            StartCoroutine(AirlockOpenedScenario());
         }
     }
 
@@ -142,6 +155,27 @@ public class ScenarioManager : MonoBehaviour
         TerminalUI.Instance.AddToTerminal("Control the robot COSMO on your middle screen", "green");
         CameraManager.Instance.SetState(3);
         MainScreen.Instance.SetState(3);
+        //set main screen to airlock game and wait until game is finished
+    }
+
+    private void OnAirlockGameCompleted()
+    {
+        StartCoroutine(AirlockOpenedScenario());
+    }
+
+    //should be ran after airlock game is completed
+    private IEnumerator AirlockOpenedScenario()
+    {
+        TerminalUI.Instance.AddToTerminal("Airlock game completed!", "green");
+        MainScreen.Instance.SetState(4);
+        yield return new WaitForSeconds(3f);
+        
+        TerminalUI.Instance.AddToTerminal("Martinez: Alright, awaiting instructions.", "yellow");
+        yield return new WaitForSeconds(3f);
+        TerminalUI.Instance.AddToTerminal("Flight Director: <color=green>@MissionOperationsSpecialist</color=green> transmit the power restoration schematics to Martinez without delay.", "pink");
+        yield return new WaitForSeconds(3.5f);
+        TerminalUI.Instance.AddToTerminal("Open the wiring app and solve the problem!", "green");
+        MainScreen.Instance.SetState(5);
     }
 
     // Called by CommandProcessor if user typed "open X"
