@@ -14,6 +14,8 @@ public class GridGenerator : MonoBehaviour
 
     public List<Vector2Int> obstaclePositions = new List<Vector2Int>(); // List of obstacle positions
 
+    public Material quadMaterial; // Assign in Inspector (ensure it's URP-compatible if you're using URP)
+
     void Start()
     {
         GenerateGrid();
@@ -36,21 +38,23 @@ public class GridGenerator : MonoBehaviour
 
                 Vector2Int gridPosition = new Vector2Int(x, z);
 
+                Renderer r = quad.GetComponent<Renderer>();
+                r.material = quadMaterial;
                 if (gridPosition == startGridPosition)
                 {
-                    quad.GetComponent<Renderer>().material.color = Color.green;
+                    r.material.color = Color.green;
                 }
                 else if (gridPosition == finishGridPosition)
                 {
-                    quad.GetComponent<Renderer>().material.color = Color.red;
+                    r.material.color = Color.red;
                 }
                 else if (obstaclePositions.Contains(gridPosition))
                 {
-                    quad.GetComponent<Renderer>().material.color = Color.black; // Mark obstacles as black
+                    r.material.color = Color.black; // Mark obstacles as black
                 }
                 else
                 {
-                    quad.GetComponent<Renderer>().material.color = Color.white;
+                    r.material.color = Color.white;
                 }
 
                 // Position the quad with centering offset
