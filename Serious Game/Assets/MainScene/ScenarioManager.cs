@@ -45,10 +45,10 @@ public class ScenarioManager : MonoBehaviour
         {
             gameStarted = true;
 
-             StartCoroutine(StartScenario());
+            StartCoroutine(StartScenario());
             
             //debug skipping progress
-            //StartCoroutine(CircuitCompletedScenario());
+            // StartCoroutine(SystemBreakdownScenario());
         }
     }
 
@@ -119,8 +119,8 @@ public class ScenarioManager : MonoBehaviour
     private IEnumerator ShowTipsWhileWaitingForGate()
     {
         float elapsed = 0f;
-        float firstTipTime = 5f;
-        float secondTipTime = 10f;
+        float firstTipTime = 15f;
+        float secondTipTime = 30f;
 
         while (waitingForGate && !gateAOpened)
         {
@@ -149,7 +149,7 @@ public class ScenarioManager : MonoBehaviour
             TerminalUI.Instance.AddToTerminal("Martinez: thx", "yellow");
             yield return new WaitForSeconds(5f);
             TerminalUI.Instance.AddToTerminal("Martinez: I'm outside", "yellow");
-            yield return new WaitForSeconds(15f);
+            yield return new WaitForSeconds(9f);
 
             StartCoroutine(SystemBreakdownScenario()); //NEXT SCENARIO
         }
@@ -163,6 +163,7 @@ public class ScenarioManager : MonoBehaviour
         MainScreen.Instance.SetState(2);
         CameraManager.Instance.SetState(1);
         yield return new WaitForSeconds(2f);
+        SoundManager.Instance.Play("shout1");
 
         //Crackling sound, all cameras go to static, except for the satellite view.
         //Alarm sounds start playing. Warning pops up on main screen “ALL SYSTEMS OFFLINE” 
@@ -170,6 +171,7 @@ public class ScenarioManager : MonoBehaviour
         SoundManager.Instance.Play("error");
         TerminalUI.Instance.AddToTerminal("State Report: Severe breach in Lab-2", "red");
         yield return new WaitForSeconds(1f);
+        SoundManager.Instance.Play("worried");
         TerminalUI.Instance.AddToTerminal("CRITICAL SYSTEM ERROR", "red");
         SoundManager.Instance.Play("alarm");
         yield return new WaitForSeconds(0.5f);
@@ -423,6 +425,23 @@ public class ScenarioManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         TerminalUI.Instance.AddToTerminal("CAPCOM: Martinez, head to the escape pod with the gear. You have 20 minutes to collect everything and get yourself ready. You’re coming home.", "#24c1ff");
         yield return new WaitForSeconds(7f);
+
+        //force open terminal
+        TerminalUI.Instance.ShowTerminal();
+        TerminalUI.Instance.AddToTerminal("");
+        SoundManager.Instance.Play("success");
+        TerminalUI.Instance.AddToTerminal("=== END OF GAME ===");
+        TerminalUI.Instance.AddToTerminal("Thank you for playing!");
+        yield return new WaitForSeconds(1f);
+        TerminalUI.Instance.AddToTerminal("Created by: Team 3");
+        TerminalUI.Instance.AddToTerminal("Lucia Bottlíková     1858947");
+        TerminalUI.Instance.AddToTerminal("Beril Gurkan         1843834");
+        TerminalUI.Instance.AddToTerminal("Oliver Škařupa       2001381");
+        TerminalUI.Instance.AddToTerminal("Fatma İkra Künü      1974246");
+        TerminalUI.Instance.AddToTerminal("Matilda Ronay         1966197");
+        TerminalUI.Instance.AddToTerminal("Laura Leśniak         1824473");
+        yield return new WaitForSeconds(1f);
+        TerminalUI.Instance.AddToTerminal("We hope you learnt something about Computer Science Problems");
     }
     
     //--------------------------------------------------------------------------------

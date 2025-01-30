@@ -35,10 +35,12 @@ public class PipeText : MonoBehaviour
         if (maxFlowLogic.TryAdjustFlow(pipeID))
         {
             UpdateFlowText();
+            SoundManager.Instance.Play("pipe");
         }
         else
         {
             Debug.Log($"Pipe {pipeID}: Flow unchanged.");
+            SoundManager.Instance.Play("error");
         }
     }
 
